@@ -191,7 +191,6 @@ flutter:
     - family: Integral CF
       fonts:
         - asset: lib/assets/fonts/Fontspring-DEMO-integralcf-regular.otf
-        - asset: lib/assets/fonts/Fontspring-DEMO-integralcf-semibold.otf
         - asset: lib/assets/fonts/Fontspring-DEMO-integralcf-medium.otf
         - asset: lib/assets/fonts/Fontspring-DEMO-integralcf-bold.otf
 
