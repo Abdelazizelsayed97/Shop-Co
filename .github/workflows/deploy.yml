@@ -15,7 +15,7 @@ jobs:
         with:
           flutter-version: '3.29.2'
 
-      - run: flutter build web
+      - run: flutter build web --no-tree-shake-icons
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
