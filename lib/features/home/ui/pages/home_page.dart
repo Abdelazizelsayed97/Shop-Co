@@ -122,7 +122,6 @@ class _HomePageState extends State<_HomePage>
       listener: (context, state) {
         if (state.products.isSuccess) {
           products.addAll(state.products.data ?? []);
-          print('Success ${state.products.data}');
         } else if (state.products.isFailure) {
           print('Failure ${state.products.failureMessage}');
         }
