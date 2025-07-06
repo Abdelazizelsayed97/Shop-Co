@@ -1,6 +1,6 @@
 {
-    "name": "e_commerce_web_app",
-    "short_name": "e_commerce_web_app",
+    "name": "Shop-Co",
+    "short_name": "Shop-Co",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

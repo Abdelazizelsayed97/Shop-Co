@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../../../core/widgets/app_buttons.dart';
 import '../widgets/app_bar_widget.dart';
 
@@ -28,7 +26,7 @@ class HomePage extends StatelessWidget {
 }
 
 class _HomePage extends StatefulWidget {
-  GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   @override
   State<_HomePage> createState() => _HomePageState();

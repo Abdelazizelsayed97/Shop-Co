@@ -92,23 +92,3 @@ class _ProductItemBuilderState extends State<ProductItemBuilder> {
     );
   }
 }
-
-double getItemHeight(BoxConstraints constraints, BuildContext context) {
-  final mediaQuery = MediaQuery.of(context);
-  final screenHeight =
-      constraints.maxWidth > 850
-          ? mediaQuery.size.width
-          : mediaQuery.size.height;
-
-  // Adjusting for safe areas or app bars if needed
-  final usableHeight = screenHeight - mediaQuery.padding.top - kToolbarHeight;
-
-  // You can customize this logic
-  if (constraints.maxWidth >= 1200) {
-    return usableHeight * 0.36; // desktop layout
-  } else if (constraints.maxWidth >= 800) {
-    return usableHeight * 0.25; // tablet layout
-  } else {
-    return usableHeight * 0.35; // mobile layout
-  }
-}
