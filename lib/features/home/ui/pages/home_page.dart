@@ -2,6 +2,7 @@ import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:e_commerce_web_app/core/utils/text_styles.dart';
 import 'package:e_commerce_web_app/features/home/data/static_data/static_data.dart';
 import 'package:e_commerce_web_app/features/home/ui/manager/cubit/home_cubit.dart';
+import 'package:e_commerce_web_app/features/home/ui/pages/product_page.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/dress_style_widget.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/product_body_widget.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/review_card_widget.dart';
@@ -52,7 +53,7 @@ class _HomePageState extends State<_HomePage>
     return BlocListener<HomeCubit, HomeState>(
       listener: (context, state) {
         if (state.products.isSuccess) {
-          products.addAll(state.products.data ?? []);
+          fetchedProducts.addAll(state.products.data ?? []);
         } else if (state.products.isFailure) {
           print('Failure ${state.products.failureMessage}');
         }
@@ -111,10 +112,12 @@ class _HomePageState extends State<_HomePage>
                                     ? Image.asset(
                                       "lib/assets/images/group.png",
                                       width: constraints.maxWidth,
+                                      fit: BoxFit.cover,
                                     )
-                                    : SvgPicture.asset(
-                                      "lib/assets/images/Group2.svg",
+                                    : Image.asset(
+                                      "lib/assets/images/Group2.png",
                                       width: constraints.maxWidth,
+                                      fit: BoxFit.cover,
                                     ),
                                 72.responsiveHeight(),
                                 Text(
@@ -145,7 +148,17 @@ class _HomePageState extends State<_HomePage>
                                 ),
                                 36.responsiveHeight(),
                                 OutlinedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => ProductPage(
+                                              products: fetchedProducts,
+                                            ),
+                                      ),
+                                    );
+                                  },
                                   style: OutlinedButton.styleFrom(
                                     side: const BorderSide(color: Colors.grey),
                                   ),
@@ -159,7 +172,14 @@ class _HomePageState extends State<_HomePage>
                                   ),
                                 ),
                                 40.responsiveHeight(),
-                                DressStyleWidget(),
+                                constraints.maxWidth > 850
+                                    ? DressStyleWidget()
+                                    : Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                      ),
+                                      child: DressStyleWidget(),
+                                    ),
                                 80.responsiveHeight(),
                                 Align(
                                   alignment: Alignment.centerLeft,

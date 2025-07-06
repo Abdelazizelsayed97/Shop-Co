@@ -43,6 +43,7 @@ final List<String> categories = const [
       rate: 3,
     ),
   ];
+   List<ProductEntity> fetchedProducts = [];
   List<ReviewEntity> reviews = [
     ReviewEntity(
       id: "1",

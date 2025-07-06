@@ -37,20 +37,12 @@ class _ProductItemBuilderState extends State<ProductItemBuilder> {
                 ? CachedNetworkImage(
                   fit: BoxFit.fitHeight,
                   imageUrl: widget.product.images?[0] ?? "",
-                  height: constrains.maxHeight > 850 ? 298.h : 200.h,
+                  // height: getItemHeight(constrains, context),
                   errorWidget: (context, url, error) {
                     return Icon(Iconsax.warning_2, color: Colors.red);
                   },
-
-                  width: constrains.maxHeight > 950 ? 295.w : 198.w,
                 )
-                : Image.asset(
-                  widget.product.image ?? "",
-
-                  // height: constrains.maxHeight > 850 ? 298.h : 200.h,
-
-                  // width: constrains.maxHeight > 950 ? 295.w : 198.w,
-                ),
+                : Image.asset(widget.product.image ?? ""),
             16.responsiveHeight(),
             Padding(
               padding: EdgeInsets.all(8.0),
@@ -98,5 +90,25 @@ class _ProductItemBuilderState extends State<ProductItemBuilder> {
         );
       },
     );
+  }
+}
+
+double getItemHeight(BoxConstraints constraints, BuildContext context) {
+  final mediaQuery = MediaQuery.of(context);
+  final screenHeight =
+      constraints.maxWidth > 850
+          ? mediaQuery.size.width
+          : mediaQuery.size.height;
+
+  // Adjusting for safe areas or app bars if needed
+  final usableHeight = screenHeight - mediaQuery.padding.top - kToolbarHeight;
+
+  // You can customize this logic
+  if (constraints.maxWidth >= 1200) {
+    return usableHeight * 0.36; // desktop layout
+  } else if (constraints.maxWidth >= 800) {
+    return usableHeight * 0.25; // tablet layout
+  } else {
+    return usableHeight * 0.35; // mobile layout
   }
 }
