@@ -1,8 +1,6 @@
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:e_commerce_web_app/core/utils/text_styles.dart';
-import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
-import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
-import 'package:e_commerce_web_app/features/home/domain/entity/review_entity.dart';
+import 'package:e_commerce_web_app/features/home/data/static_data/static_data.dart';
 import 'package:e_commerce_web_app/features/home/ui/manager/cubit/home_cubit.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/dress_style_widget.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/product_body_widget.dart';
@@ -38,73 +36,6 @@ class _HomePage extends StatefulWidget {
 class _HomePageState extends State<_HomePage>
     with SingleTickerProviderStateMixin {
   bool isLoading = true;
-  final List<String> _categories = const [
-    "Shop",
-    "On Sale",
-    "New Arrivals",
-    "Brands",
-  ];
-
-  List<ProductEntity> products = [
-    ProductEntity(
-      id: "1",
-      name: "T-SHIRT WITH TAPE DETAILS",
-      description: "Description 1",
-      price: 100.0,
-      image: "lib/assets/images/product-1.png",
-      rate: 4,
-    ),
-    ProductEntity(
-      id: "2",
-      name: "SKINNY FIT JEANS",
-      description: "Description 2",
-      price: 200.0,
-      image: "lib/assets/images/product-2.png",
-      rate: 5,
-    ),
-    ProductEntity(
-      id: "3",
-      name: "CHECKERED SHIRT",
-      description: "Description 3",
-      price: 300.0,
-      image: "lib/assets/images/product-3.png",
-      rate: 3,
-    ),
-    ProductEntity(
-      id: "3",
-      name: "SLEEVE STRIPED T-SHIRT",
-      description: "Description 4",
-      price: 300.0,
-      image: "lib/assets/images/product-4.png",
-      rate: 3,
-    ),
-  ];
-  List<ReviewEntity> reviews = [
-    ReviewEntity(
-      id: "1",
-      user: UserInfoEntity(fullName: "John Doe"),
-      rate: 5,
-      description: "This is a review",
-    ),
-    ReviewEntity(
-      id: "2",
-      user: UserInfoEntity(fullName: "John Doe"),
-      rate: 5,
-      description: "This is a review",
-    ),
-    ReviewEntity(
-      id: "3",
-      user: UserInfoEntity(fullName: "John Doe"),
-      rate: 5,
-      description: "This is a review",
-    ),
-    ReviewEntity(
-      id: "4",
-      user: UserInfoEntity(fullName: "John Doe"),
-      rate: 5,
-      description: "This is a review",
-    ),
-  ];
 
   @override
   void initState() {
@@ -143,10 +74,10 @@ class _HomePageState extends State<_HomePage>
                   drawer: Drawer(
                     backgroundColor: Colors.white,
                     child: Column(
-                      children: List.generate(_categories.length, (index) {
+                      children: List.generate(categories.length, (index) {
                         return ListTile(
                           title: Text(
-                            _categories[index],
+                            categories[index],
                             style: TextStyles.boldFont(),
                           ),
                           onTap: () {
@@ -188,7 +119,7 @@ class _HomePageState extends State<_HomePage>
                                 72.responsiveHeight(),
                                 Text(
                                   "NEW ARRIVALS",
-                                  style: TextStyles.boldFont(fontSize: 48.sp),
+                                  style: TextStyles.boldFont(fontSize: 48),
                                   strutStyle: StrutStyle(
                                     forceStrutHeight: true,
                                     height: .6,
@@ -205,7 +136,7 @@ class _HomePageState extends State<_HomePage>
                                 64.responsiveHeight(),
                                 Text(
                                   "TOP SELLING",
-                                  style: TextStyles.boldFont(fontSize: 48.sp),
+                                  style: TextStyles.boldFont(fontSize: 48),
                                 ),
                                 54.responsiveHeight(),
                                 Align(
@@ -269,7 +200,7 @@ class _HomePageState extends State<_HomePage>
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.grey.shade300,
+                                        // color: Colors.grey.shade300,
                                         borderRadius: BorderRadius.circular(
                                           16.r,
                                         ),
@@ -283,9 +214,28 @@ class _HomePageState extends State<_HomePage>
                                           0.2,
                                     ),
                                     Positioned(
-                                      top: -50.h,
+                                      bottom: 0,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade300,
+                                          borderRadius: BorderRadius.circular(
+                                            16.r,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16.w,
+                                        ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                            0.15,
+                                      ),
+                                    ),
+                                    Positioned(
                                       left: 0,
                                       right: 0,
+                                      top: 0,
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 16.w,

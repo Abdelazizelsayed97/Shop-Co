@@ -14,41 +14,84 @@ class DressStyleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 60.h),
-      child: Column(
-        children: [
-          Text(
-            "BROWSE BY dress STYLE",
-            style: TextStyles.boldFont(fontSize: 48.sp),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(16.r),
           ),
-          64.responsiveHeight(),
-          Wrap(
-            alignment: WrapAlignment.start,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: List.generate(
-              dressStyles.length,
-              (index) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                child: ScaleTransition(
-                  scale: Tween<double>(begin: 0, end: 1).animate(
-                    CurvedAnimation(
-                      parent: AlwaysStoppedAnimation<double>(1),
-                      curve: Interval(0.1 * index, 1, curve: Curves.easeInOut),
+          padding: EdgeInsets.symmetric(vertical: 60.h),
+          child: Column(
+            children: [
+              Text(
+                "BROWSE BY dress STYLE",
+                style: TextStyles.boldFont(fontSize: 48.sp),
+              ),
+              64.responsiveHeight(),
+              constraints.maxWidth > 850
+                  ? Wrap(
+                    alignment: WrapAlignment.start,
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: List.generate(
+                      dressStyles.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 8.h,
+                        ),
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 0, end: 1).animate(
+                            CurvedAnimation(
+                              parent: AlwaysStoppedAnimation<double>(1),
+                              curve: Interval(
+                                0.1 * index,
+                                1,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
+                          ),
+                          child: Image.asset(
+                            dressStyles[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: List.generate(
+                      dressStyles.length,
+                      (index) => Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.w,
+                          vertical: 8.h,
+                        ),
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 0, end: 1).animate(
+                            CurvedAnimation(
+                              parent: AlwaysStoppedAnimation<double>(1),
+                              curve: Interval(
+                                0.1 * index,
+                                1,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
+                          ),
+                          child: Image.asset(
+                            dressStyles[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  child: Image.asset(dressStyles[index]),
-                ),
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },  
     );
   }
 }

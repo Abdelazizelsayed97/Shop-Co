@@ -27,7 +27,8 @@ class _ReviewCardWidgetState extends State<ReviewCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.05,
+      height: MediaQuery.of(context).size.height * 0.1,
+      width: MediaQuery.of(context).size.width * .2,
       padding: EdgeInsets.all(8.0.r),
       decoration: BoxDecoration(
         color: Colors.transparent,
@@ -37,7 +38,7 @@ class _ReviewCardWidgetState extends State<ReviewCardWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

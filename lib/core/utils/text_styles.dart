@@ -28,7 +28,7 @@ class TextStyles {
       fontFamily: "Integral CF",
       shadows: shadows,
       fontSize: fontSize?.sp ?? 14.sp,
-      fontWeight: FontWeight.normal,
+      fontWeight: FontWeight.w400,
       color: color ?? Colors.black,
       decoration: decoration,
     );
