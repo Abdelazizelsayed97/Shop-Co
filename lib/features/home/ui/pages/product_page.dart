@@ -32,7 +32,7 @@ class _ProductPageState extends State<ProductPage> {
                     crossAxisCount: constraints.maxWidth > 850 ? 4 : 2,
                     crossAxisSpacing: 8.w,
                     mainAxisSpacing: 8.h,
-                  // mainAxisExtent:getItemHeight(constraints, context)
+                    // mainAxisExtent:getItemHeight(constraints, context)
                     // constraints.maxWidth > 850
                     //     ? MediaQuery.of(context).size.width * 0.35
                     //     : MediaQuery.of(context).size.height * 0.3,
@@ -41,7 +41,7 @@ class _ProductPageState extends State<ProductPage> {
                             ? 1.8 / 2.7
                             : constraints.maxWidth > 850
                             ? 1.8 / 3.2
-                            : 5 / 8,
+                            : 5 / 8.3,
                   ),
                   itemBuilder: (context, index) {
                     return ProductItemBuilder(product: widget.products[index]);
