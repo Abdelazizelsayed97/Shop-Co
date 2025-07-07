@@ -21,7 +21,7 @@ class ApiFetchProductsResultModel {
             json["products"] == null
                 ? []
                 : List<Product>.from(
-                  json["products"]!.map((x) => Product.fromJson(x)),
+                  json["products"].map((x) => Product.fromJson(x)),
                 ),
       );
 
@@ -29,7 +29,7 @@ class ApiFetchProductsResultModel {
     "products":
         products == null
             ? []
-            : List<dynamic>.from(products!.map((x) => x.toJson())),
+            : List<dynamic>.from(products?.map((x) => x.toJson()) ?? []),
   };
 }
 
@@ -64,7 +64,7 @@ class Product {
     images:
         json["images"] == null
             ? []
-            : List<String>.from(json["images"]!.map((x) => x)),
+            : List<String>.from(json["images"].map((x) => x)),
     creationAt:
         json["creationAt"] == null ? null : DateTime.parse(json["creationAt"]),
     updatedAt:
@@ -77,7 +77,8 @@ class Product {
     "price": price,
     "description": description,
     "category": category?.toJson(),
-    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
+    "images":
+        images == null ? [] : List<dynamic>.from(images?.map((x) => x) ?? []),
     "creationAt": creationAt?.toIso8601String(),
     "updatedAt": updatedAt?.toIso8601String(),
   };
@@ -92,7 +93,7 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],
-    name: nameValues.map[json["name"]]!,
+    name: nameValues.map[json["name"]],
     image: json["image"],
   );
 

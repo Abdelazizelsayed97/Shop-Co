@@ -28,6 +28,7 @@ class AppTextFormField extends StatefulWidget {
     this.maxLength,
     this.height,
     this.hasCounter,
+    this.fillColor,
   });
 
   final TextEditingController controller;
@@ -48,6 +49,7 @@ class AppTextFormField extends StatefulWidget {
   final int? maxLength;
   final double? height;
   final bool? hasCounter;
+  final Color? fillColor;
 
   @override
   State<AppTextFormField> createState() => _AppTextFormFieldState();
@@ -74,7 +76,9 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
     children: [
       Container(
         alignment: Alignment.bottomCenter,
+
         decoration: BoxDecoration(
+          color: widget.fillColor ?? Colors.white,
           border: Border.all(
             color: widget.borderColor ?? AppColors.borderSideColor,
           ),
@@ -138,7 +142,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
             ),
             suffixIconColor: AppColors.borderSideColor,
             suffixIcon: widget.suffixIcon,
-            fillColor: Colors.transparent,
+            fillColor: widget.fillColor ?? Colors.transparent,
             filled: true,
             focusedBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent),

@@ -1,4 +1,4 @@
-import 'package:e_commerce_web_app/core/utils/cosnt_strings.dart';
+import 'package:e_commerce_web_app/core/utils/const_strings.dart';
 import 'package:e_commerce_web_app/core/utils/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

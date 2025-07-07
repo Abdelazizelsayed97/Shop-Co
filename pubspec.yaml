@@ -119,6 +119,8 @@ dependencies:
   unicode: ^1.1.8
   flutter_rating: ^2.0.2
   google_fonts: ^6.2.1
+  http: ^1.4.0
+  dio: ^5.8.0+1
 
 
 # flutter_launcher_icons:

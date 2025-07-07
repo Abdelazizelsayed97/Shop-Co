@@ -6,5 +6,5 @@ class ConstStrings {
 class EndPoints {
   static const String login = "login";
   static const String register = "register";
-  static const String products = "'https://dummyjson.com/products'";
+  static const String products = "https://dummyjson.com/products";
 }

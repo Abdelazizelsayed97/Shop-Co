@@ -1,8 +1,9 @@
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:e_commerce_web_app/core/utils/text_styles.dart';
+import 'package:e_commerce_web_app/core/widgets/app_text_from.dart';
 import 'package:e_commerce_web_app/features/home/data/static_data/static_data.dart';
 import 'package:e_commerce_web_app/features/home/ui/manager/cubit/home_cubit.dart';
-import 'package:e_commerce_web_app/features/home/ui/pages/product_page.dart';
+import 'package:e_commerce_web_app/features/home/ui/pages/product_filter_page.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/dress_style_widget.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/product_body_widget.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/review_card_widget.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../../core/widgets/app_buttons.dart';
 import '../widgets/app_bar_widget.dart';
 
@@ -19,7 +21,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getProducts(),
+      create:
+          (context) =>
+              HomeCubit()
+                ..getProducts()
+                ..fetchDummyProducts(limit: 10.toString(), skip: 0.toString()),
       child: _HomePage(),
     );
   }
@@ -48,14 +54,31 @@ class _HomePageState extends State<_HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeCubit, HomeState>(
-      listener: (context, state) {
-        if (state.products.isSuccess) {
-          fetchedProducts.addAll(state.products.data ?? []);
-        } else if (state.products.isFailure) {
-          print('Failure ${state.products.failureMessage}');
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<HomeCubit, HomeState>(
+          listenWhen:
+              (previous, current) => previous.products != current.products,
+          listener: (context, state) {
+            if (state.products.isSuccess) {
+              fetchedProducts.addAll(state.products.data ?? []);
+            } else if (state.products.isFailure) {
+              print('Failure //${state.products.failureMessage}');
+            }
+          },
+        ),
+        BlocListener<HomeCubit, HomeState>(
+          listenWhen:
+              (previous, current) =>
+                  previous.dummyProducts != current.dummyProducts,
+          listener: (context, state) {
+            if (state.dummyProducts.isSuccess) {
+              print("new data ${state.dummyProducts.data}");
+              fetchedpp.addAll(state.dummyProducts.data ?? []);
+            }
+          },
+        ),
+      ],
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           if (state.products.isFailure) {
@@ -93,7 +116,9 @@ class _HomePageState extends State<_HomePage>
                   body:
                       state.products.isLoading
                           ? Center(
-                            child: Center(child: CircularProgressIndicator()),
+                            child: Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            ),
                           )
                           : SingleChildScrollView(
                             padding: EdgeInsets.symmetric(
@@ -147,15 +172,11 @@ class _HomePageState extends State<_HomePage>
                                 36.responsiveHeight(),
                                 OutlinedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (context) => ProductPage(
-                                              products: fetchedProducts,
-                                            ),
-                                      ),
-                                    );
+                                    Get.to(() {
+                                      return ProductFilterPage(
+                                        products: fetchedProducts,
+                                      );
+                                    });
                                   },
                                   style: OutlinedButton.styleFrom(
                                     side: const BorderSide(color: Colors.grey),
@@ -215,6 +236,7 @@ class _HomePageState extends State<_HomePage>
                                 64.responsiveHeight(),
                                 Stack(
                                   fit: StackFit.loose,
+                                  alignment: Alignment.centerLeft,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
@@ -229,7 +251,7 @@ class _HomePageState extends State<_HomePage>
                                       width: MediaQuery.of(context).size.width,
                                       height:
                                           MediaQuery.of(context).size.height *
-                                          0.2,
+                                          0.25,
                                     ),
                                     Positioned(
                                       bottom: 0,
@@ -247,7 +269,7 @@ class _HomePageState extends State<_HomePage>
                                             MediaQuery.of(context).size.width,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                            0.15,
+                                            0.2,
                                       ),
                                     ),
                                     Positioned(
@@ -259,6 +281,10 @@ class _HomePageState extends State<_HomePage>
                                           horizontal: 16.w,
                                         ),
                                         child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 24.w,
+                                            vertical: 16.h,
+                                          ),
                                           decoration: BoxDecoration(
                                             color: Colors.black,
                                             borderRadius: BorderRadius.circular(
@@ -274,8 +300,53 @@ class _HomePageState extends State<_HomePage>
                                               MediaQuery.of(
                                                 context,
                                               ).size.height *
-                                              0.1,
-                                          child: Row(children: []),
+                                              0.15,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                  right: 24.w,
+                                                ),
+                                                child: Text(
+                                                  "STAY UPTO DATE ABOUT\n OUR LATEST OFFERS",
+                                                  style: TextStyles.boldFont(
+                                                    fontSize: 32,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+
+                                              Flexible(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    AppTextFormField(
+                                                      controller:
+                                                          TextEditingController(),
+                                                      validator: (p0) {},
+                                                      textHint:
+                                                          "Enter your email address",
+                                                      icon: Icon(
+                                                        Icons.telegram_outlined,
+                                                      ),
+                                                    ),
+                                                    AppPrimaryButton(
+                                                      child: Text(
+                                                        "Subscribe to Newsletter",
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
