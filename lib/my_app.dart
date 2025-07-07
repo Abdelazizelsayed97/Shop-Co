@@ -1,7 +1,7 @@
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'features/authentication/ui/pages/login_page.dart';
@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
        SaveContext.instance.setBuildContext(context);
     precacheImage(AssetImage("lib/assets/images/group.png"), context);
-    precacheImage(AssetImage("lib/assets/images/Group2.png"), context);
+    precacheImage(AssetImage("lib/assets/images/Group_mobile_view.png"), context);
     super.didChangeDependencies();
   }
 

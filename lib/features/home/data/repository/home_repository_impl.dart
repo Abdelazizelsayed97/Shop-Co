@@ -27,8 +27,8 @@ class HomeRepositoryImpl implements HomeRepository {
       print('failure: ${result.exception}');
       return left(ApiError(message: "Something went wrong"));
     } else {
-      print('success: ${result.data}');
       final data = ApiFetchProductsResultModel.fromJson(result.data!).products;
+      print('success: ${data?.map((e) => e.fromApi()).toList()}');
       if (data?.isNotEmpty ?? false) {
         return right(data!.map((e) => e.fromApi()).toList());
       } else {

@@ -41,23 +41,18 @@ class DressStyleWidget extends StatelessWidget {
                       children: [
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-
                           child: Image.asset(dressStyles[0]),
                         ),
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-
                           child: Image.asset(dressStyles[1]),
                         ),
-
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-
                           child: Image.asset(dressStyles[3]),
                         ),
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-
                           child: Image.asset(dressStyles[2]),
                         ),
                       ],
@@ -87,6 +82,7 @@ class DressStyleWidget extends StatelessWidget {
                           child: Image.asset(
                             dressStyles[index],
                             fit: BoxFit.cover,
+                            
                           ),
                         ),
                       ),

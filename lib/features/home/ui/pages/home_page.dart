@@ -113,7 +113,7 @@ class _HomePageState extends State<_HomePage>
                                       fit: BoxFit.cover,
                                     )
                                     : Image.asset(
-                                      "lib/assets/images/Group2.png",
+                                      "lib/assets/images/Group_mobile_view.png",
                                       width: constraints.maxWidth,
                                       fit: BoxFit.cover,
                                     ),
