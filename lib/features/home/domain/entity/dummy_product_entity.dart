@@ -1,5 +1,6 @@
-import 'package:e_commerce_web_app/features/home/data/models/api_fetch_dummy_products_result_model.dart';
-
+import 'package:e_commerce_web_app/features/home/domain/entity/dimensions_entity.dart';
+import 'package:e_commerce_web_app/features/home/domain/entity/dummy_review_entity.dart';
+import 'package:e_commerce_web_app/features/home/domain/entity/meta_data_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class DummyProductEntity extends Equatable {
@@ -15,14 +16,14 @@ class DummyProductEntity extends Equatable {
   final String? brand;
   final String? sku;
   final int? weight;
-  final Dimensions? dimensions;
+  final DimensionsEntity? dimensions;
   final String? warrantyInformation;
   final String? shippingInformation;
-  final AvailabilityStatus? availabilityStatus;
-  final List<Review>? reviews;
-  final ReturnPolicy? returnPolicy;
+  final AvailabilityStatusEnum? availabilityStatus;
+  final List<DummyReviewEntity>? reviews;
+  final ReturnPolicyEnum? returnPolicy;
   final int? minimumOrderQuantity;
-  final Meta? meta;
+  final MetaDataEntity? meta;
   final List<String>? images;
   final String? thumbnail;
 
@@ -76,3 +77,13 @@ class DummyProductEntity extends Equatable {
 }
 
 enum CategoryEnum { BEAUTY, FRAGRANCES, FURNITURE, GROCERIES }
+
+enum AvailabilityStatusEnum { IN_STOCK, LOW_STOCK }
+
+enum ReturnPolicyEnum {
+  NO_RETURN_POLICY,
+  THE_30_DAYS_RETURN_POLICY,
+  THE_60_DAYS_RETURN_POLICY,
+  THE_7_DAYS_RETURN_POLICY,
+  THE_90_DAYS_RETURN_POLICY,
+}

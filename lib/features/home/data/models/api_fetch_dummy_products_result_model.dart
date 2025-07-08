@@ -1,19 +1,11 @@
-// To parse this JSON data, do
-//
-//     final apiFetchDummyProductsResultModel = apiFetchDummyProductsResultModelFromJson(jsonString);
-
 import 'dart:convert';
 
 ApiFetchDummyProductsResultModel apiFetchDummyProductsResultModelFromJson(
   String str,
 ) => ApiFetchDummyProductsResultModel.fromJson(json.decode(str));
 
-String apiFetchDummyProductsResultModelToJson(
-  ApiFetchDummyProductsResultModel data,
-) => json.encode(data.toJson());
-
 class ApiFetchDummyProductsResultModel {
-  final List<ApiProduct>? products;
+  final List<ApiProductModel>? products;
   final int? total;
   final int? skip;
   final int? limit;
@@ -31,30 +23,22 @@ class ApiFetchDummyProductsResultModel {
     products:
         json["products"] == null
             ? []
-            : List<ApiProduct>.from(
-              json["products"]!.map((x) => ApiProduct.fromJson(x)),
+            : List<ApiProductModel>.from(
+              (json["products"] as List).map(
+                (x) => ApiProductModel.fromJson(x),
+              ),
             ),
     total: json["total"],
     skip: json["skip"],
     limit: json["limit"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "products":
-        products == null
-            ? []
-            : List<dynamic>.from(products!.map((x) => x.toJson())),
-    "total": total,
-    "skip": skip,
-    "limit": limit,
-  };
 }
 
-class ApiProduct {
+class ApiProductModel {
   final int? id;
   final String? title;
   final String? description;
-  final ApiCategory? category;
+  final ApiCategoryEnum? category;
   final double? price;
   final double? discountPercentage;
   final double? rating;
@@ -63,18 +47,18 @@ class ApiProduct {
   final String? brand;
   final String? sku;
   final int? weight;
-  final Dimensions? dimensions;
+  final ApiDimensionsModel? dimensions;
   final String? warrantyInformation;
   final String? shippingInformation;
-  final AvailabilityStatus? availabilityStatus;
-  final List<Review>? reviews;
-  final ReturnPolicy? returnPolicy;
+  final ApiAvailabilityStatusEnum? availabilityStatus;
+  final List<ApiReviewModel>? reviews;
+  final ApiReturnPolicyEnum? returnPolicy;
   final int? minimumOrderQuantity;
-  final Meta? meta;
+  final ApiMetaModel? meta;
   final List<String>? images;
   final String? thumbnail;
 
-  ApiProduct({
+  ApiProductModel({
     this.id,
     this.title,
     this.description,
@@ -99,120 +83,90 @@ class ApiProduct {
     this.thumbnail,
   });
 
-  factory ApiProduct.fromJson(Map<String, dynamic> json) => ApiProduct(
-    id: json["id"],
-    title: json["title"],
-    description: json["description"],
-    category: categoryValues.map[json["category"]]!,
-    price: json["price"]?.toDouble(),
-    discountPercentage: json["discountPercentage"]?.toDouble(),
-    rating: json["rating"]?.toDouble(),
-    stock: json["stock"],
-    tags:
-        json["tags"] == null
-            ? []
-            : List<String>.from(json["tags"]!.map((x) => x)),
-    brand: json["brand"],
-    sku: json["sku"],
-    weight: json["weight"],
-    dimensions:
-        json["dimensions"] == null
-            ? null
-            : Dimensions.fromJson(json["dimensions"]),
-    warrantyInformation: json["warrantyInformation"],
-    shippingInformation: json["shippingInformation"],
-    availabilityStatus:
-        availabilityStatusValues.map[json["availabilityStatus"]]!,
-    reviews:
-        json["reviews"] == null
-            ? []
-            : List<Review>.from(
-              json["reviews"]!.map((x) => Review.fromJson(x)),
-            ),
-    returnPolicy: returnPolicyValues.map[json["returnPolicy"]]!,
-    minimumOrderQuantity: json["minimumOrderQuantity"],
-    meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-    images:
-        json["images"] == null
-            ? []
-            : List<String>.from(json["images"]!.map((x) => x)),
-    thumbnail: json["thumbnail"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "description": description,
-    "category": categoryValues.reverse[category],
-    "price": price,
-    "discountPercentage": discountPercentage,
-    "rating": rating,
-    "stock": stock,
-    "tags": tags == null ? [] : List<dynamic>.from(tags!.map((x) => x)),
-    "brand": brand,
-    "sku": sku,
-    "weight": weight,
-    "dimensions": dimensions?.toJson(),
-    "warrantyInformation": warrantyInformation,
-    "shippingInformation": shippingInformation,
-    "availabilityStatus": availabilityStatusValues.reverse[availabilityStatus],
-    "reviews":
-        reviews == null
-            ? []
-            : List<dynamic>.from(reviews!.map((x) => x.toJson())),
-    "returnPolicy": returnPolicyValues.reverse[returnPolicy],
-    "minimumOrderQuantity": minimumOrderQuantity,
-    "meta": meta?.toJson(),
-    "images": images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
-    "thumbnail": thumbnail,
-  };
+  factory ApiProductModel.fromJson(Map<String, dynamic> json) =>
+      ApiProductModel(
+        id: json["id"],
+        title: json["title"],
+        description: json["description"],
+        category: categoryValues.map[json["category"]],
+        price: json["price"]?.toDouble(),
+        discountPercentage: json["discountPercentage"]?.toDouble(),
+        rating: json["rating"]?.toDouble(),
+        stock: json["stock"],
+        tags:
+            json["tags"] == null
+                ? []
+                : List<String>.from((json["tags"] as List).map((x) => x)),
+        brand: json["brand"],
+        sku: json["sku"],
+        weight: json["weight"],
+        dimensions:
+            json["dimensions"] == null
+                ? null
+                : ApiDimensionsModel.fromJson(json["dimensions"]),
+        warrantyInformation: json["warrantyInformation"],
+        shippingInformation: json["shippingInformation"],
+        availabilityStatus:
+            availabilityStatusValues.map[json["availabilityStatus"]],
+        reviews:
+            json["reviews"] == null
+                ? []
+                : List<ApiReviewModel>.from(
+                  (json["reviews"] as List).map(
+                    (x) => ApiReviewModel.fromJson(x),
+                  ),
+                ),
+        returnPolicy: returnPolicyValues.map[json["returnPolicy"]],
+        minimumOrderQuantity: json["minimumOrderQuantity"],
+        meta: json["meta"] == null ? null : ApiMetaModel.fromJson(json["meta"]),
+        images:
+            json["images"] == null
+                ? []
+                : List<String>.from((json["images"] as List).map((x) => x)),
+        thumbnail: json["thumbnail"],
+      );
 }
 
-enum AvailabilityStatus { IN_STOCK, LOW_STOCK }
+enum ApiAvailabilityStatusEnum { IN_STOCK, LOW_STOCK }
 
 final availabilityStatusValues = EnumValues({
-  "In Stock": AvailabilityStatus.IN_STOCK,
-  "Low Stock": AvailabilityStatus.LOW_STOCK,
+  "In Stock": ApiAvailabilityStatusEnum.IN_STOCK,
+  "Low Stock": ApiAvailabilityStatusEnum.LOW_STOCK,
 });
 
-enum ApiCategory { BEAUTY, FRAGRANCES, FURNITURE, GROCERIES }
+enum ApiCategoryEnum { BEAUTY, FRAGRANCES, FURNITURE, GROCERIES }
 
 final categoryValues = EnumValues({
-  "beauty": ApiCategory.BEAUTY,
-  "fragrances": ApiCategory.FRAGRANCES,
-  "furniture": ApiCategory.FURNITURE,
-  "groceries": ApiCategory.GROCERIES,
+  "beauty": ApiCategoryEnum.BEAUTY,
+  "fragrances": ApiCategoryEnum.FRAGRANCES,
+  "furniture": ApiCategoryEnum.FURNITURE,
+  "groceries": ApiCategoryEnum.GROCERIES,
 });
 
-class Dimensions {
+class ApiDimensionsModel {
   final double? width;
   final double? height;
   final double? depth;
 
-  Dimensions({this.width, this.height, this.depth});
+  ApiDimensionsModel({this.width, this.height, this.depth});
 
-  factory Dimensions.fromJson(Map<String, dynamic> json) => Dimensions(
-    width: json["width"]?.toDouble(),
-    height: json["height"]?.toDouble(),
-    depth: json["depth"]?.toDouble(),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "width": width,
-    "height": height,
-    "depth": depth,
-  };
+  factory ApiDimensionsModel.fromJson(Map<String, dynamic> json) =>
+      ApiDimensionsModel(
+        width: json["width"]?.toDouble(),
+        height: json["height"]?.toDouble(),
+        depth: json["depth"]?.toDouble(),
+      );
 }
 
-class Meta {
+class ApiMetaModel {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final String? barcode;
   final String? qrCode;
 
-  Meta({this.createdAt, this.updatedAt, this.barcode, this.qrCode});
+  ApiMetaModel({this.createdAt, this.updatedAt, this.barcode, this.qrCode});
 
-  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+  factory ApiMetaModel.fromJson(Map<String, dynamic> json) => ApiMetaModel(
     createdAt:
         json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
     updatedAt:
@@ -220,16 +174,9 @@ class Meta {
     barcode: json["barcode"],
     qrCode: json["qrCode"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "createdAt": createdAt?.toIso8601String(),
-    "updatedAt": updatedAt?.toIso8601String(),
-    "barcode": barcode,
-    "qrCode": qrCode,
-  };
 }
 
-enum ReturnPolicy {
+enum ApiReturnPolicyEnum {
   NO_RETURN_POLICY,
   THE_30_DAYS_RETURN_POLICY,
   THE_60_DAYS_RETURN_POLICY,
@@ -238,21 +185,21 @@ enum ReturnPolicy {
 }
 
 final returnPolicyValues = EnumValues({
-  "No return policy": ReturnPolicy.NO_RETURN_POLICY,
-  "30 days return policy": ReturnPolicy.THE_30_DAYS_RETURN_POLICY,
-  "60 days return policy": ReturnPolicy.THE_60_DAYS_RETURN_POLICY,
-  "7 days return policy": ReturnPolicy.THE_7_DAYS_RETURN_POLICY,
-  "90 days return policy": ReturnPolicy.THE_90_DAYS_RETURN_POLICY,
+  "No return policy": ApiReturnPolicyEnum.NO_RETURN_POLICY,
+  "30 days return policy": ApiReturnPolicyEnum.THE_30_DAYS_RETURN_POLICY,
+  "60 days return policy": ApiReturnPolicyEnum.THE_60_DAYS_RETURN_POLICY,
+  "7 days return policy": ApiReturnPolicyEnum.THE_7_DAYS_RETURN_POLICY,
+  "90 days return policy": ApiReturnPolicyEnum.THE_90_DAYS_RETURN_POLICY,
 });
 
-class Review {
+class ApiReviewModel {
   final int? rating;
   final String? comment;
   final DateTime? date;
   final String? reviewerName;
   final String? reviewerEmail;
 
-  Review({
+  ApiReviewModel({
     this.rating,
     this.comment,
     this.date,
@@ -260,21 +207,13 @@ class Review {
     this.reviewerEmail,
   });
 
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
+  factory ApiReviewModel.fromJson(Map<String, dynamic> json) => ApiReviewModel(
     rating: json["rating"],
     comment: json["comment"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
     reviewerName: json["reviewerName"],
     reviewerEmail: json["reviewerEmail"],
   );
-
-  Map<String, dynamic> toJson() => {
-    "rating": rating,
-    "comment": comment,
-    "date": date?.toIso8601String(),
-    "reviewerName": reviewerName,
-    "reviewerEmail": reviewerEmail,
-  };
 }
 
 class EnumValues<T> {
@@ -282,9 +221,4 @@ class EnumValues<T> {
   late Map<T, String> reverseMap;
 
   EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

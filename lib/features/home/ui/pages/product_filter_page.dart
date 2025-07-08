@@ -49,9 +49,7 @@ class _ProductFilterPageState extends State<ProductFilterPage> {
                     return InkWell(
                       onTap: () {
                         Get.to(
-                          () => ProductPage(
-                            images: widget.products[index].images ?? [],
-                          ),
+                          () => ProductDetailsPage(),
                           popGesture: true,
                           routeName: "Product-$index",
                         );
