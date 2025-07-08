@@ -32,7 +32,7 @@ class _ProductItemBuilderState extends State<ProductItemBuilder> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => ProductDetailsPage());
+        Get.to(() => ProductDetailsPage(products: widget.product));
       },
       child: LayoutBuilder(
         builder: (context, constrains) {

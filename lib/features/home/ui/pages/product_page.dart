@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:e_commerce_web_app/features/home/domain/entity/dummy_product_entity.dart';
 import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../../core/utils/text_styles.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({super.key, this.products, this.dummyProducts});
@@ -15,21 +18,18 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
+  void initState() {
+    print('products >> ${widget.products}');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context);
-
-    final images = [
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150',
-      'https://via.placeholder.com/150',
-    ];
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20).h,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth > 1000;
@@ -38,76 +38,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /// Left side - images
-                  Flexible(
-                    flex: 2,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        /// Thumbnails
-                        Column(
-                          children: List.generate(
-                            widget.products?.image?.isNotEmpty ?? false
-                                ? 1
-                                : widget.products?.images?.length ?? 0,
-                            (index) {
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 12),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.blueAccent,
-                                    width: index == 0 ? 2 : 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      widget.products?.image?.isNotEmpty ??
-                                              false
-                                          ? widget.products?.image ?? ""
-                                          : widget.products?.images?[index] ??
-                                              "",
-                                  height: 80,
-
-                                  width: 80,
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-
-                        /// Main Image
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                widget.products?.image?.isNotEmpty ?? false
-                                    ? widget.products?.image ?? ""
-                                    : widget.products?.images?[0] ?? "",
-                            height: 400,
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildImagePreviewSection,
 
                   SizedBox(width: isWide ? 40 : 0, height: isWide ? 0 : 30),
 
                   /// Right side - details
                   Flexible(
-                    flex: 3,
+                    flex: 4,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'ONE LIFE GRAPHIC T-SHIRT',
-                          style: TextStyle(
-                            fontSize: 34.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyles.boldFont(fontSize: 18),
                         ),
-                        const SizedBox(height: 12),
+                        12.responsiveHeight(),
 
                         /// Rating
                         Row(
@@ -120,28 +65,25 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 size: 20,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            8.responsiveWidth(),
                             const Text('4.5/5'),
                           ],
                         ),
 
-                        const SizedBox(height: 20),
+                        20.responsiveHeight(),
 
                         /// Price
                         Row(
                           children: [
                             Text(
                               '\$260',
-                              style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: TextStyles.boldFont(fontSize: 18),
                             ),
-                            const SizedBox(width: 12),
+                            12.responsiveWidth(),
                             Text(
                               '\$300',
-                              style: TextStyle(
-                                fontSize: 20.sp,
+                              style: TextStyles.regularFont(
+                                fontSize: 16,
                                 color: Colors.grey,
                                 decoration: TextDecoration.lineThrough,
                               ),
@@ -149,16 +91,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ],
                         ),
 
-                        const SizedBox(height: 20),
+                        16.responsiveHeight(),
                         const Text(
                           'This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.',
                         ),
 
-                        const SizedBox(height: 20),
+                        16.responsiveHeight(),
 
                         /// Colors
                         const Text('Select Colors'),
-                        const SizedBox(height: 8),
+                        8.responsiveHeight(),
                         Row(
                           children: [
                             _buildColorDot(Colors.brown),
@@ -168,11 +110,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ],
                         ),
 
-                        const SizedBox(height: 20),
-                        const Text('Choose Size'),
-                        const SizedBox(height: 8),
+                        20.responsiveHeight(), const Text('Choose Size'),
+                        8.responsiveHeight(),
                         Wrap(
-                          spacing: 12,
+                          spacing: 12.w,
                           children: [
                             _buildSizeBox('Small'),
                             _buildSizeBox('Medium'),
@@ -181,7 +122,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           ],
                         ),
 
-                        const SizedBox(height: 20),
+                        20.responsiveHeight(),
                         Row(
                           children: [
                             Container(
@@ -225,6 +166,69 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Flexible get _buildImagePreviewSection {
+    return Flexible(
+      flex: 3,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          /// Thumbnails
+          Column(
+            children: List.generate(
+              widget.products?.image?.isNotEmpty ?? false
+                  ? 1
+                  : widget.products?.images?.length ?? 0,
+              (index) {
+                return Container(
+                  margin: EdgeInsets.only(bottom: 8.h),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.blueAccent,
+                      width: index == 0 ? 2 : 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child:
+                      widget.products?.image?.isNotEmpty ?? false
+                          ? Image.asset(
+                            widget.products?.image ?? "",
+                            height: 80.h,
+                            fit: BoxFit.fitHeight,
+                          )
+                          : CachedNetworkImage(
+                            height: 80.h,
+                            fit: BoxFit.fitHeight,
+                            imageUrl:
+                                widget.products?.image?.isNotEmpty ?? false
+                                    ? widget.products?.image ?? ""
+                                    : widget.products?.images?[index] ?? "",
+                          ),
+                );
+              },
+            ),
+          ),
+
+          /// Main Image
+          20.responsiveHeight(),
+          Expanded(
+            child:
+                widget.products?.image?.isNotEmpty ?? false
+                    ? Image.asset(
+                      widget.products?.image ?? "",
+                      height: 300.h,
+                      fit: BoxFit.fitWidth,
+                    )
+                    : CachedNetworkImage(
+                      imageUrl: widget.products?.images?[0] ?? "",
+                      height: 300.h,
+                      fit: BoxFit.contain,
+                    ),
+          ),
+        ],
       ),
     );
   }
