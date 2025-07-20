@@ -121,7 +121,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           obscureText: widget.opsCureText ?? false,
           cursorHeight: 8.responsiveH(),
           cursorRadius: Radius.circular(3.r),
-          cursorColor: AppColors.primaryColor,
+          cursorColor: AppColors.grey_700,
           showCursor: true,
           decoration: InputDecoration(
             hoverColor: Colors.transparent,

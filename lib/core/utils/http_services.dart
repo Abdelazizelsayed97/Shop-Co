@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class HttpService {
@@ -20,7 +21,7 @@ class HttpService {
     Map<String, dynamic> data, {
     Map<String, String>? headers,
   }) async {
-    final url = Uri.parse('$baseUrl$endpoint');
+    final url = Uri.https('$baseUrl$endpoint');
     final response = await http.post(
       url,
       headers: headers ?? {'Content-Type': 'application/json'},

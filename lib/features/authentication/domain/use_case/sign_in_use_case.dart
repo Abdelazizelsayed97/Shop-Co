@@ -8,6 +8,6 @@ class SignInUseCase {
   SignInUseCase(this.authRepository);
 
   Future<Either<String, UserInfoEntity>> call(LoginInput input) {
-    return authRepository.signInWithEmailandPassword(input);
+    return authRepository.login(input);
   }
 }

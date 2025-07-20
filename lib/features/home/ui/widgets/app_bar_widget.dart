@@ -1,6 +1,9 @@
+import 'package:e_commerce_web_app/core/widgets/app_buttons.dart';
 import 'package:e_commerce_web_app/core/widgets/app_text_from.dart';
+import 'package:e_commerce_web_app/features/authentication/ui/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/utils/responsive_by_media_query.dart';
 import '../../../../core/utils/text_styles.dart';
@@ -129,8 +132,17 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         ),
 
         Padding(
-          padding: EdgeInsets.only(left: 16.w),
+          padding: EdgeInsets.only(left: 16.w, right: 16.w),
           child: Icon(Icons.shopping_cart),
+        ),
+        AppPrimaryButton(
+          colors: [Colors.black, Colors.black87, Colors.black54],
+          width: MediaQuery.of(context).size.width > 800 ? 130.w : 100.w,
+          onTap: () => Get.to(() => LoginPage(), popGesture: false),
+          child: Text(
+            "Get start",
+            style: TextStyles.regularFont(fontSize: 16, color: Colors.white),
+          ),
         ),
       ] else ...[
         Spacer(flex: 1),
