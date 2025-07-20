@@ -1,5 +1,7 @@
+import 'package:e_commerce_web_app/features/home/domain/entity/dummy_product_entity.dart';
 import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
 import 'package:e_commerce_web_app/features/home/ui/pages/product_page.dart';
+import 'package:e_commerce_web_app/features/home/ui/widgets/app_bar_widget.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/product_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,19 +9,26 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 
 class ProductFilterPage extends StatefulWidget {
-  const ProductFilterPage({super.key, required this.products});
+  const ProductFilterPage({
+    super.key,
+    required this.products,
+    this.dummyProducts,
+  });
   final List<ProductEntity> products;
+  final List<DummyProductEntity>? dummyProducts;
 
   @override
   State<ProductFilterPage> createState() => _ProductFilterPageState();
 }
 
 class _ProductFilterPageState extends State<ProductFilterPage> {
+  final GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
+          appBar: AppBarWidget(constraints: constraints, globalKey: globalKey),
           body: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -32,7 +32,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20).h,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final isWide = constraints.maxWidth > 1000;
+              final isWide = constraints.maxWidth > 800;
               return Flex(
                 direction: isWide ? Axis.horizontal : Axis.vertical,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,14 +59,20 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           children: [
                             ...List.generate(
                               5,
-                              (index) => const Icon(
+                              (index) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
-                                size: 20,
+                                size: 20.r,
                               ),
                             ),
                             8.responsiveWidth(),
-                            const Text('4.5/5'),
+                            Text(
+                              '4.5/5',
+                              style: TextStyles.regularFont(
+                                fontSize: 14,
+                                color: Colors.blue,
+                              ),
+                            ),
                           ],
                         ),
 
@@ -190,7 +196,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       color: Colors.blueAccent,
                       width: index == 0 ? 2 : 1,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                   child:
                       widget.products?.image?.isNotEmpty ?? false
@@ -211,7 +217,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               },
             ),
           ),
-
           /// Main Image
           20.responsiveHeight(),
           Expanded(

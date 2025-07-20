@@ -108,7 +108,7 @@ class GradientOutlinedButton extends StatelessWidget {
         padding: ResponsivePadding.responsiveAll(value ?? 1),
         child: Container(
           height: height ?? 48.responsiveH(),
-          width: double.infinity,
+          // width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30.r),

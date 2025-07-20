@@ -121,6 +121,8 @@ dependencies:
   google_fonts: ^6.2.1
   http: ^1.4.0
   dio: ^5.8.0+1
+  lottie: ^3.3.1
+  gif:
 
 
 # flutter_launcher_icons:
@@ -187,6 +189,7 @@ flutter:
 
   assets:
     - lib/assets/images/
+    - lib/assets/icons/
     - lib/assets/fonts/
   
   fonts:

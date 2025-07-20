@@ -1,6 +1,7 @@
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:e_commerce_web_app/core/utils/text_styles.dart';
 import 'package:e_commerce_web_app/core/widgets/app_text_from.dart';
+import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
 import 'package:e_commerce_web_app/features/home/data/static_data/static_data.dart';
 import 'package:e_commerce_web_app/features/home/ui/manager/cubit/home_cubit.dart';
 import 'package:e_commerce_web_app/features/home/ui/pages/product_filter_page.dart';
@@ -12,11 +13,13 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
 import '../../../../core/widgets/app_buttons.dart';
 import '../widgets/app_bar_widget.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.userInfoEntity});
+  final UserInfoEntity userInfoEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -327,14 +330,20 @@ class _HomePageState extends State<_HomePage>
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: [
-                                                    AppTextFormField(
-                                                      controller:
-                                                          TextEditingController(),
-                                                      validator: (p0) {},
-                                                      textHint:
-                                                          "Enter your email address",
-                                                      icon: Icon(
-                                                        Icons.telegram_outlined,
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                        bottom: 16.h,
+                                                      ),
+                                                      child: AppTextFormField(
+                                                        controller:
+                                                            TextEditingController(),
+                                                        validator: (p0) {},
+                                                        textHint:
+                                                            "Enter your email address",
+                                                        icon: Icon(
+                                                          Icons
+                                                              .telegram_outlined,
+                                                        ),
                                                       ),
                                                     ),
                                                     AppPrimaryButton(
