@@ -2,7 +2,7 @@ part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
   final Async<List<ProductEntity>> products;
-  final Async<List<DummyProductEntity>> dummyProducts;
+  final Async<List<ProductEntityModel>> dummyProducts;
   factory HomeState.init() {
     return HomeState(products: Async.initial(), dummyProducts: Async.initial());
   }
@@ -10,7 +10,7 @@ class HomeState extends Equatable {
 
   HomeState reduce({
     Async<List<ProductEntity>>? products,
-    Async<List<DummyProductEntity>>? dummyProducts,
+    Async<List<ProductEntityModel>>? dummyProducts,
   }) {
     return HomeState(
       products: products ?? this.products,

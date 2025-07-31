@@ -91,7 +91,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
           inputFormatters: [if (widget.formatter != null) ...widget.formatter!],
           canRequestFocus: true,
           focusNode: focusNode,
-          autofocus: false,
+          autofocus: true,
           onChanged: widget.onChanged,
           buildCounter: (
             context, {

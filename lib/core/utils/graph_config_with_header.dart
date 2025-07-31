@@ -24,7 +24,7 @@ class GraphQlConfigWithHeader {
 
     _authLink = AuthLink(
       getToken: () async {
-        final token = SharedPrefs.getFromShard(key: ConstStrings.token);
+        final token = SharedPrefs.getFromShared(key: ConstStrings.token);
         if (token.isNotEmpty) {
           return 'Bearer $token';
         } else {

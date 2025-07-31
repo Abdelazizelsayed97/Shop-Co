@@ -1,8 +1,9 @@
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
-import 'package:e_commerce_web_app/features/authentication/ui/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
+
+import 'core/helper/app_router.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -25,22 +26,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(backgroundColor: Colors.black),
-      ),
-      debugShowCheckedModeBanner: false,
-      home: ScreenUtilInit(
-        useInheritedMediaQuery: true,
-        minTextAdapt: true,
-        designSize: Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height,
-        ),
-        builder: (context, child) => RegisterPage(),
-        // builder: (context, child) => HomePage(userInfoEntity: UserInfoEntity()),
-      ),
+    return ScreenUtilInit(
+      useInheritedMediaQuery: true,
+      minTextAdapt: true,
+      designSize:
+          GetPlatform.isWeb
+              ? Size(
+                MediaQuery.of(context).size.width,
+                MediaQuery.of(context).size.height,
+              )
+              : Size(375, 812),
+      builder:
+          (context, child) => MaterialApp.router(
+            theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: AppBarTheme(backgroundColor: Colors.black),
+            ),
+            debugShowCheckedModeBanner: false,
+            routerConfig: router,
+          ),
     );
   }
 }

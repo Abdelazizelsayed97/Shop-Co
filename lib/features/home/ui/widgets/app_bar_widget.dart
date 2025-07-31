@@ -1,11 +1,15 @@
+import 'package:e_commerce_web_app/core/utils/local_hive_storage.dart';
 import 'package:e_commerce_web_app/core/widgets/app_buttons.dart';
 import 'package:e_commerce_web_app/core/widgets/app_text_from.dart';
-import 'package:e_commerce_web_app/features/authentication/ui/pages/login_page.dart';
+import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:iconsax/iconsax.dart';
 
+import '../../../../core/utils/const_strings.dart';
 import '../../../../core/utils/responsive_by_media_query.dart';
+import '../../../../core/utils/shared_prefs.dart';
 import '../../../../core/utils/text_styles.dart';
 
 class AppBarWidget extends StatefulWidget implements PreferredSizeWidget {
@@ -25,6 +29,7 @@ class AppBarWidget extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppBarWidgetState extends State<AppBarWidget> {
   late TextEditingController _searchController;
+  final currentUserId = SharedPrefs.getFromShared(key: ConstStrings.userId);
 
   final List<String> _categories = const [
     "Shop",
@@ -32,9 +37,28 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     "New Arrivals",
     "Brands",
   ];
+  UserInfoEntity? userData;
   @override
   void initState() {
     super.initState();
+    HiveStorageService.service
+        .getModel<UserInfoEntity>(
+          boxName: "CurrentUser",
+          key: "CurrentUser",
+          fromJson: (p0) {
+            return UserInfoEntity.fromJson(p0);
+          },
+        )
+        .then((value) async {
+          if (value != null) {
+            setState(() {
+              userData = value;
+            });
+            print('value $value');
+          }
+        });
+
+    // HiveStorageService.service.clearBox("CurrentUser");
     _searchController = TextEditingController();
   }
 
@@ -73,6 +97,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
       backgroundColor: Colors.white,
       actions: _buildAppBar,
       actionsPadding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 24.h),
+      automaticallyImplyLeading: false,
     );
   }
 
@@ -80,7 +105,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
     return [
       Image.asset("lib/assets/images/logo.png", height: 24.h),
       verticalSpacer(20),
-      if (MediaQuery.of(context).size.width > 850) ...[
+      if (MediaQuery.of(context).size.width > 950) ...[
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Wrap(
@@ -131,25 +156,48 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           ),
         ),
 
-        Padding(
-          padding: EdgeInsets.only(left: 16.w, right: 16.w),
-          child: Icon(Icons.shopping_cart),
-        ),
-        AppPrimaryButton(
-          colors: [Colors.black, Colors.black87, Colors.black54],
-          width: MediaQuery.of(context).size.width > 800 ? 130.w : 100.w,
-          onTap: () => Get.to(() => LoginPage(), popGesture: false),
-          child: Text(
-            "Get start",
-            style: TextStyles.regularFont(fontSize: 16, color: Colors.white),
+        GestureDetector(
+          onTap: () => context.go("/cart"),
+          child: Padding(
+            padding: EdgeInsets.only(left: 16.w, right: 16.w),
+            child: Icon(Icons.shopping_cart),
           ),
         ),
+        if (userData == null) ...[
+          AppPrimaryButton(
+            colors: [Colors.black, Colors.black87, Colors.black54],
+            width: MediaQuery.of(context).size.width > 800 ? 130.w : 100.w,
+            onTap: () => context.push("/login"),
+            child: Text(
+              "Get start",
+              overflow: TextOverflow.visible,
+              style: TextStyles.regularFont(fontSize: 16, color: Colors.white),
+            ),
+          ),
+        ] else ...[
+          IconButton(
+            icon: Icon(Iconsax.profile_circle, size: 28.r),
+            onPressed: () {
+              print('--=-=-=-=-=-=- ${userData}');
+              if (ModalRoute.of(context)?.settings.name != "/profile") {
+                context.push("/profile");
+              }
+            },
+          ),
+        ],
       ] else ...[
         Spacer(flex: 1),
         16.responsiveWidth(),
         Icon(Icons.search),
         24.responsiveWidth(),
-        Icon(Icons.shopping_cart),
+        IconButton(
+          icon: Icon(Icons.shopping_cart),
+          onPressed: () {
+            if (ModalRoute.of(context)?.settings.name != "/cart") {
+              context.go("/cart");
+            }
+          },
+        ),
       ],
     ];
   }

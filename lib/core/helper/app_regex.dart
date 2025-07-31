@@ -7,8 +7,9 @@ class AppRegex {
     return RegExp(r"^01[0-5]\d{8}$").hasMatch(phone.toString());
   }
 
-  static const String validEmailRegex =
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+  static final validEmailRegex = RegExp(
+    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+  );
   static const String validPhoneNumberRegex = r"^01[0-5]\d{8}$";
   static const String validPasswordRegex =
       r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";

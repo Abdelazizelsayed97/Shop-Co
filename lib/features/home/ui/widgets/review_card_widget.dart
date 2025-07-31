@@ -40,40 +40,47 @@ class _ReviewCardWidgetState extends State<ReviewCardWidget> {
       height: MediaQuery.of(context).size.height * 0.1,
       width: MediaQuery.of(context).size.width * .2,
       padding: EdgeInsets.all(8.0.r),
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: Colors.grey.shade300),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
 
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Center(
-                child: StarRating(
-                  size: 20.r,
-                  rating: rating,
-                  color: Colors.orange,
-                  borderColor: Colors.grey,
-                  allowHalfRating: true,
-                  starCount: starCount,
-                  onRatingChanged:
-                      (rating) => setState(() {
-                        this.rating = rating;
-                        widget.review.rate = rating.toInt();
-                      }),
+          FittedBox(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Center(
+                  child: StarRating(
+                    size: MediaQuery.of(context).size.width > 800 ? 20.r : 16.r,
+                    rating: rating,
+                    color: Colors.orange,
+                    borderColor: Colors.grey,
+                    allowHalfRating: true,
+                    starCount: starCount,
+                    onRatingChanged:
+                        (rating) => setState(() {
+                          this.rating = rating;
+                          widget.review.rate = rating.toInt();
+                        }),
+                  ),
                 ),
-              ),
-              Text(
-                widget.review.rate.toString(),
-                style: TextStyles.regularFont(fontSize: 16),
-              ),
-            ],
+                Text(
+                  widget.review.rate.toString(),
+                  style: TextStyles.regularFont(fontSize: 16),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(8.0.r),
@@ -93,8 +100,8 @@ class _ReviewCardWidgetState extends State<ReviewCardWidget> {
 
   Widget _buildReviewCardForMobile() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.1,
-      width: MediaQuery.of(context).size.width * .2,
+      // height: MediaQuery.of(context).size.height * 0.1,
+      width: MediaQuery.of(context).size.width * .5,
       padding: EdgeInsets.all(8.0.r),
       decoration: BoxDecoration(
         color: Colors.transparent,

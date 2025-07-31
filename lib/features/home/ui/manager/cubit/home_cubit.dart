@@ -1,11 +1,12 @@
 import 'package:e_commerce_web_app/core/di/app_di.dart';
 import 'package:e_commerce_web_app/core/utils/async.dart';
-import 'package:e_commerce_web_app/features/home/domain/entity/dummy_product_entity.dart';
 import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
 import 'package:e_commerce_web_app/features/home/domain/use_case/fetch_product_dummy_use_case.dart';
 import 'package:e_commerce_web_app/features/home/domain/use_case/fetch_products_use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../core/models/product_entity_model.dart';
 
 part 'home_state.dart';
 
