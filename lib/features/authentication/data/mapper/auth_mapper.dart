@@ -9,6 +9,7 @@ extension ConvertLoginResultToEntity on ApiUserModel {
       lastName: lastName,
       phone: phone,
       token: token,
+      verifiedEmail: email,
     );
   }
 }

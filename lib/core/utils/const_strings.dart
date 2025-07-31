@@ -31,3 +31,10 @@ class ProfileEndPoints {
   const ProfileEndPoints._();
   static const String getUserById = "users";
 }
+
+class CartEndPoints {
+  const CartEndPoints._();
+  static const String addToCart = "cart/add";
+  static const String removeFromCart = "cart/remove";
+  static const String fetchCart = "cart/fetch";
+}
