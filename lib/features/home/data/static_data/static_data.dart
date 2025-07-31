@@ -1,7 +1,8 @@
 import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
-import 'package:e_commerce_web_app/features/home/domain/entity/dummy_product_entity.dart';
 import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
 import 'package:e_commerce_web_app/features/home/domain/entity/review_entity.dart';
+
+import '../../../../core/models/product_entity_model.dart';
 
 final List<String> categories = const [
   "Shop",
@@ -10,42 +11,50 @@ final List<String> categories = const [
   "Brands",
 ];
 
-List<ProductEntity> products = [
-  ProductEntity(
+List<ProductEntityModel> products = [
+  ProductEntityModel(
     id: "1",
     name: "T-SHIRT WITH TAPE DETAILS",
     description: "Description 1",
     price: 100.0,
-    image: "lib/assets/images/product-1.png",
-    rate: 4,
+    images: ["lib/assets/images/product-1.png"],
+    rating: 4,
+    brand: "Adidas",
+    stock: 10,
   ),
-  ProductEntity(
+  ProductEntityModel(
     id: "2",
     name: "SKINNY FIT JEANS",
     description: "Description 2",
     price: 200.0,
-    image: "lib/assets/images/product-2.png",
-    rate: 5,
+    images: ["lib/assets/images/product-2.png"],
+    rating: 5,
+    brand: "Puma",
+    stock: 10,
   ),
-  ProductEntity(
+  ProductEntityModel(
     id: "3",
     name: "CHECKERED SHIRT",
     description: "Description 3",
     price: 300.0,
-    image: "lib/assets/images/product-3.png",
-    rate: 3,
+    images: ["lib/assets/images/product-3.png"],
+    rating: 3,
+    brand: "Adidas",
+    stock: 10,
   ),
-  ProductEntity(
+  ProductEntityModel(
     id: "3",
     name: "SLEEVE STRIPED T-SHIRT",
     description: "Description 4",
     price: 300.0,
-    image: "lib/assets/images/product-4.png",
-    rate: 3,
+    images: ["lib/assets/images/product-4.png"],
+    rating: 3,
+    brand: "Puma",
+    stock: 10,
   ),
 ];
 List<ProductEntity> fetchedProducts = [];
-List<DummyProductEntity> fetchedpp = [];
+List<ProductEntityModel> fetchedpp = [];
 List<ReviewEntity> reviews = [
   ReviewEntity(
     id: "1",

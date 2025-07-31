@@ -1,22 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce_web_app/core/models/product_entity_model.dart';
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
-import 'package:e_commerce_web_app/features/home/domain/entity/dummy_product_entity.dart';
-import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
+import 'package:e_commerce_web_app/features/home/ui/widgets/app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/utils/text_styles.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key, this.products, this.dummyProducts});
-  final ProductEntity? products;
-  final DummyProductEntity? dummyProducts;
+  const ProductDetailsPage({super.key, this.products});
+  final ProductEntityModel? products;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  final GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     print('products >> ${widget.products}');
@@ -25,15 +26,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20).h,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final isWide = constraints.maxWidth > 800;
-              return Flex(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isWide = constraints.maxWidth > 800;
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBarWidget(constraints: constraints, globalKey: globalKey),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20).h,
+              child: Flex(
                 direction: isWide ? Axis.horizontal : Axis.vertical,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -98,8 +100,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
 
                         16.responsiveHeight(),
-                        const Text(
-                          'This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style.',
+                        Text(
+                          widget.products?.description ?? "",
+                          style: TextStyles.regularFont(fontSize: 14),
                         ),
 
                         16.responsiveHeight(),
@@ -168,11 +171,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                   ),
                 ],
-              );
-            },
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -185,7 +188,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           /// Thumbnails
           Column(
             children: List.generate(
-              widget.products?.image?.isNotEmpty ?? false
+              widget.products?.images?.first.isNotEmpty ?? false
                   ? 1
                   : widget.products?.images?.length ?? 0,
               (index) {
@@ -199,9 +202,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child:
-                      widget.products?.image?.isNotEmpty ?? false
+                      widget.products?.images?.first.isNotEmpty ?? false
                           ? Image.asset(
-                            widget.products?.image ?? "",
+                            widget.products?.images?[index] ?? "",
                             height: 80.h,
                             fit: BoxFit.fitHeight,
                           )
@@ -209,28 +212,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             height: 80.h,
                             fit: BoxFit.fitHeight,
                             imageUrl:
-                                widget.products?.image?.isNotEmpty ?? false
-                                    ? widget.products?.image ?? ""
+                                widget.products?.images?.isNotEmpty ?? false
+                                    ? widget.products?.images?.first ?? ""
                                     : widget.products?.images?[index] ?? "",
                           ),
                 );
               },
             ),
           ),
+
           /// Main Image
           20.responsiveHeight(),
           Expanded(
             child:
-                widget.products?.image?.isNotEmpty ?? false
+                widget.products?.images?.isNotEmpty ?? false
                     ? Image.asset(
-                      widget.products?.image ?? "",
+                      widget.products?.images?.first ?? "",
                       height: 300.h,
                       fit: BoxFit.fitWidth,
                     )
                     : CachedNetworkImage(
                       imageUrl: widget.products?.images?[0] ?? "",
                       height: 300.h,
-                      fit: BoxFit.contain,
                     ),
           ),
         ],

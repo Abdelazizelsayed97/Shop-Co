@@ -22,7 +22,7 @@ class DressStyleWidget extends StatelessWidget {
             color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(16.r),
           ),
-          padding: EdgeInsets.symmetric(vertical: 60.h),
+          padding: EdgeInsets.symmetric(vertical: 48.h, horizontal: 32.w),
           child: Column(
             children: [
               Text(
@@ -35,25 +35,25 @@ class DressStyleWidget extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     child: StaggeredGrid.count(
                       axisDirection: AxisDirection.down,
-                      crossAxisSpacing: 8.w,
-                      mainAxisSpacing: 8.h,
+                      crossAxisSpacing: 16.w,
+                      mainAxisSpacing: 16.h,
                       crossAxisCount: 2,
                       children: [
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-                          child: Image.asset(dressStyles[0]),
+                          child: Image.asset(dressStyles[0], fit: BoxFit.cover),
                         ),
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-                          child: Image.asset(dressStyles[1]),
+                          child: Image.asset(dressStyles[1], fit: BoxFit.cover),
                         ),
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-                          child: Image.asset(dressStyles[3]),
+                          child: Image.asset(dressStyles[3], fit: BoxFit.cover),
                         ),
                         StaggeredGridTile.fit(
                           crossAxisCellCount: 1,
-                          child: Image.asset(dressStyles[2]),
+                          child: Image.asset(dressStyles[2], fit: BoxFit.cover),
                         ),
                       ],
                     ),
@@ -82,7 +82,6 @@ class DressStyleWidget extends StatelessWidget {
                           child: Image.asset(
                             dressStyles[index],
                             fit: BoxFit.cover,
-                            
                           ),
                         ),
                       ),

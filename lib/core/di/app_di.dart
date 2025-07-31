@@ -7,6 +7,9 @@ import 'package:e_commerce_web_app/features/home/data/di/home_di.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../features/cart/data/di/cart_di.dart';
+import '../../features/profile/data/di/profile_di.dart';
+
 final injector = GetIt.instance;
 
 class AppDi {
@@ -23,5 +26,7 @@ class AppDi {
     injector.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
     injector.registerFactory<AuthenticationCubit>(() => AuthenticationCubit());
     HomeDi.init();
+    CartDi.instance.init();
+    ProfileDi.init();
   }
 }

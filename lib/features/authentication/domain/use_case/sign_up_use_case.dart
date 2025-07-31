@@ -7,7 +7,7 @@ class SignUpUseCase {
   final AuthRepository authRepository;
   SignUpUseCase(this.authRepository);
 
-  Future<Either<String, UserInfoEntity>> call(RegisterInput input) {
+  Future<Either<String, UserInfoEntity>> execute(RegisterInput input) {
     return authRepository.register(input);
   }
 }

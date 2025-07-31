@@ -95,6 +95,23 @@ class UserInfoEntity extends Equatable {
     );
   }
 
+  factory UserInfoEntity.fromJson(Map<String, dynamic> json) {
+    return UserInfoEntity(
+      firstName: json["firstName"],
+      lastName: json["lastName"],
+      token: json["token"],
+      phone: json["phone"],
+      id: json["id"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    "firstName": firstName,
+    "lastName": lastName,
+    "token": token,
+    "phone": phone,
+    "id": id,
+  };
   @override
   List<Object?> get props => [
     birthDate,
@@ -169,6 +186,7 @@ class AddressData extends Equatable {
   @override
   List<Object?> get props => [city, country, state];
 }
+
 // ignore: constant_identifier_names
 enum ExpertRequestStatus { PENDING, ACCEPTED, REJECTED }
 

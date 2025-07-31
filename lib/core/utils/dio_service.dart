@@ -8,7 +8,7 @@ class HttpService {
   static final HttpService _instance = HttpService._internal();
   factory HttpService() => _instance;
 
-  final String baseUrl = ShopCoApi.appEndpoint;
+  final String baseUrl = appEndpoint;
   HttpService._internal();
 
   Map<String, String> _defaultHeaders({String? token}) => {

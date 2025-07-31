@@ -1,19 +1,18 @@
 import 'package:e_commerce_web_app/core/helper/app_regex.dart';
 import 'package:e_commerce_web_app/core/utils/complete_notifier.dart';
+import 'package:e_commerce_web_app/core/utils/const_strings.dart';
+import 'package:e_commerce_web_app/core/utils/local_hive_storage.dart';
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
+import 'package:e_commerce_web_app/core/utils/shared_prefs.dart';
 import 'package:e_commerce_web_app/core/utils/text_styles.dart';
 import 'package:e_commerce_web_app/core/widgets/app_buttons.dart';
 import 'package:e_commerce_web_app/core/widgets/app_text_from.dart';
 import 'package:e_commerce_web_app/features/authentication/domain/entity/input/login_input.dart';
-import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
 import 'package:e_commerce_web_app/features/authentication/ui/manager/cubit/authentication_cubit.dart';
-import 'package:e_commerce_web_app/features/authentication/ui/pages/register_page.dart';
-import 'package:e_commerce_web_app/features/home/ui/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:gif/gif.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -40,19 +39,24 @@ class _LoginPageState extends State<_LoginPage>
   late final TextEditingController _passwordController;
   late final CompleteCheckerNotifier isEnabled;
   final _formKey = GlobalKey<FormState>();
-  late GifController _gifController;
+  bool _isObscure = true;
 
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _gifController = GifController(vsync: this);
     isEnabled = CompleteCheckerNotifier(
       () =>
           _emailController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    precacheImage(AssetImage("lib/assets/icons/Login-amico.png"), context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -68,11 +72,25 @@ class _LoginPageState extends State<_LoginPage>
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
         if (state.loginState.isSuccess) {
-          Get.to(
-            () => HomePage(
-              userInfoEntity: state.loginState.data ?? UserInfoEntity(),
-            ),
-            popGesture: false,
+          print('user data ====> ${state.loginState.data}');
+          SharedPrefs.saveToShard(
+            key: ConstStrings.token,
+            value: state.loginState.data?.token ?? "",
+          );
+          SharedPrefs.saveToShard(
+            key: ConstStrings.userId,
+            value: state.loginState.data?.id ?? "",
+          );
+          var data = state.loginState.data;
+          HiveStorageService().saveModel(
+            boxName: "CurrentUser",
+            key: "CurrentUser",
+            model: data,
+            toJson: (p0) => p0?.toJson() ?? {},
+          );
+          context.pushReplacement(
+            "/",
+            extra: context.read<AuthenticationCubit>(),
           );
         } else if (state.loginState.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -101,6 +119,7 @@ class _LoginPageState extends State<_LoginPage>
                   fontSize: 24.sp,
                 ),
               ),
+              automaticallyImplyLeading: false,
             ),
             body: Stack(
               children: [
@@ -147,20 +166,45 @@ class _LoginPageState extends State<_LoginPage>
           AppTextFormField(
             label: "E-mail",
             controller: _emailController,
-            validator: (value) => null,
+            validator: (value) {
+              if (value == null) {
+                return "E-mail is required";
+              } else if (!AppRegex.validEmailRegex.hasMatch(value)) {
+                return "Enter a valid email";
+              }
+              return null;
+            },
             onChanged: (_) => isEnabled.checkIsDataCompleted(),
             height: 56.h,
+            autoValidateMode: AutovalidateMode.onUserInteraction,
           ),
           16.responsiveHeight(),
           AppTextFormField(
             label: "Password",
             controller: _passwordController,
+
             validator: (value) {
-              passwordValidator(value ?? "");
+              return passwordValidator(value ?? "");
             },
             onChanged: (_) => isEnabled.checkIsDataCompleted(),
             height: 56.h,
             autoValidateMode: AutovalidateMode.onUserInteraction,
+            suffixIcon: GestureDetector(
+              onTap: () {
+                if (_isObscure) {
+                  _isObscure = false;
+                } else {
+                  _isObscure = true;
+                }
+                setState(() {});
+              },
+              child: Icon(
+                _isObscure
+                    ? Icons.remove_red_eye_outlined
+                    : Icons.remove_red_eye,
+              ),
+            ),
+            opsCureText: true,
           ),
           SizedBox(height: 16.h),
           ValueListenableBuilder<bool>(
@@ -190,6 +234,9 @@ class _LoginPageState extends State<_LoginPage>
   }
 
   void _loginPress() {
+    print(
+      '_formKey.currentState!.validate() ${_formKey.currentState!.validate()}',
+    );
     if (_formKey.currentState!.validate()) {
       context.read<AuthenticationCubit>().login(
         LoginInput(
@@ -214,7 +261,7 @@ class _LoginPageState extends State<_LoginPage>
             ),
           ),
           TextButton(
-            onPressed: () => Get.to(() => RegisterPage()),
+            onPressed: () => context.pushNamed("/register"),
             child: Text(
               "Register",
               style: TextStyles.semiBoldFont(

@@ -1,4 +1,4 @@
-import 'package:e_commerce_web_app/features/home/domain/entity/product_entity.dart';
+import 'package:e_commerce_web_app/core/models/product_entity_model.dart';
 import 'package:e_commerce_web_app/features/home/ui/widgets/product_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProductBodyWidget extends StatelessWidget {
   const ProductBodyWidget({super.key, required this.products});
 
-  final List<ProductEntity> products;
+  final List<ProductEntityModel> products;
 
   @override
   Widget build(BuildContext context) {

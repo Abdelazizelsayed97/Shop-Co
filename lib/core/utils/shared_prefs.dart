@@ -11,18 +11,24 @@ class SharedPrefs {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  static Future<bool> saveToShard(
-      {required String key, required String value}) async {
+  static Future<bool> saveToShard({
+    required String key,
+    required String value,
+  }) async {
     return await sharedPreferences.setString(key, value);
   }
 
-  static Future<bool> saveBool(
-      {required String key, required bool value}) async {
+  static Future<bool> saveBool({
+    required String key,
+    required bool value,
+  }) async {
     return await sharedPreferences.setBool(key, value);
   }
 
-  static Future<bool> isGuestSave(
-      {required String key, required bool value}) async {
+  static Future<bool> isGuestSave({
+    required String key,
+    required bool value,
+  }) async {
     return await sharedPreferences.setBool(key, value);
   }
 
@@ -30,7 +36,7 @@ class SharedPrefs {
     return sharedPreferences.getBool(key) ?? false;
   }
 
-  static String getFromShard({required String key}) {
+  static String getFromShared({required String key}) {
     return sharedPreferences.getString(key) ?? '';
   }
 
