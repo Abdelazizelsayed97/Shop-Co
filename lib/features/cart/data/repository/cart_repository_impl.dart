@@ -41,8 +41,14 @@ class CartRepositoryImpl implements CartRepository {
   }
 
   @override
-  Future<Either<ApiError, Unit>> removeFromCart(String productId) {
-    // TODO: implement removeFromCart
-    throw UnimplementedError();
+  Future<Either<ApiError, Unit>> removeFromCart(String productId) async {
+    final response = await client.delete(
+      "${CartEndPoints.fetchCart}/$productId",
+    );
+    if (response.statusCode == 200) {
+      return Right(unit);
+    } else {
+      return Left(ApiError(message: "Something want wrong"));
+    }
   }
 }

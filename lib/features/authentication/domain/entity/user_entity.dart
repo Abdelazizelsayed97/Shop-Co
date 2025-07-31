@@ -102,6 +102,7 @@ class UserInfoEntity extends Equatable {
       token: json["token"],
       phone: json["phone"],
       id: json["id"],
+      verifiedEmail: json["verifiedEmail"],
     );
   }
 
@@ -111,6 +112,7 @@ class UserInfoEntity extends Equatable {
     "token": token,
     "phone": phone,
     "id": id,
+    "verifiedEmail": verifiedEmail,
   };
   @override
   List<Object?> get props => [

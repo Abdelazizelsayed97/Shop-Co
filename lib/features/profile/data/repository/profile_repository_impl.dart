@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce_web_app/core/helper/api_error_handler.dart';
 import 'package:e_commerce_web_app/core/utils/const_strings.dart';
 import 'package:e_commerce_web_app/core/utils/dio_service.dart';
 import 'package:e_commerce_web_app/core/utils/local_hive_storage.dart';
+import 'package:e_commerce_web_app/features/authentication/data/mapper/auth_mapper.dart';
+import 'package:e_commerce_web_app/features/authentication/data/models/api_login_result_model.dart';
 import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
 import 'package:e_commerce_web_app/features/profile/domain/repository/profile_repository.dart';
 
@@ -10,7 +14,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final HttpService _httpService = HttpService();
   @override
   Future<Either<ApiError, UserInfoEntity>> fetchUserData() async {
-    print('fetchUserData at profile repository');
     UserInfoEntity? _userData;
     await HiveStorageService.service
         .getModel(
@@ -27,10 +30,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
     final response = await _httpService.get(
       "${ProfileEndPoints.getUserById}/${_userData?.id}",
     );
-    if (response.statusCode != 200) {
-      return Left(ApiError(message: "Something want wrong"));
+    final data = ApiUserModel.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 201) {
+      return Right(data.convertToEntity());
     } else {
-      return Right(UserInfoEntity());
+      return Left(ApiError(message: "Something want wrong"));
     }
   }
 
