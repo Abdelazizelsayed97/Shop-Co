@@ -1,23 +1,19 @@
 part of 'home_cubit.dart';
 
 class HomeState extends Equatable {
-  final Async<List<ProductEntity>> products;
   final Async<List<ProductEntityModel>> dummyProducts;
   factory HomeState.init() {
-    return HomeState(products: Async.initial(), dummyProducts: Async.initial());
+    return HomeState(dummyProducts: Async.initial());
   }
-  const HomeState({required this.products, required this.dummyProducts});
+  const HomeState({required this.dummyProducts});
 
   HomeState reduce({
     Async<List<ProductEntity>>? products,
     Async<List<ProductEntityModel>>? dummyProducts,
   }) {
-    return HomeState(
-      products: products ?? this.products,
-      dummyProducts: dummyProducts ?? this.dummyProducts,
-    );
+    return HomeState(dummyProducts: dummyProducts ?? this.dummyProducts);
   }
 
   @override
-  List<Object?> get props => [products, dummyProducts];
+  List<Object?> get props => [dummyProducts];
 }

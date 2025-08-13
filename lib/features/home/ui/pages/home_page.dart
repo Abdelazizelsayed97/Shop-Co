@@ -27,7 +27,6 @@ class HomePage extends StatelessWidget {
       create:
           (context) =>
               HomeCubit()
-                ..getProducts()
                 ..fetchDummyProducts(limit: 10.toString(), skip: 0.toString()),
       child: _HomePage(),
     );
@@ -56,17 +55,6 @@ class _HomePageState extends State<_HomePage> {
         listeners: [
           BlocListener<HomeCubit, HomeState>(
             listenWhen:
-                (previous, current) => previous.products != current.products,
-            listener: (context, state) {
-              if (state.products.isSuccess) {
-                fetchedProducts.addAll(state.products.data ?? []);
-              } else if (state.products.isFailure) {
-                print('Failure //${state.products.failureMessage}');
-              }
-            },
-          ),
-          BlocListener<HomeCubit, HomeState>(
-            listenWhen:
                 (previous, current) =>
                     previous.dummyProducts != current.dummyProducts,
             listener: (context, state) {
@@ -79,9 +67,6 @@ class _HomePageState extends State<_HomePage> {
         ],
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            //   if (state.products.isFailure) {
-            //     return Center(child: AppPrimaryButton(child: Text("Retry")));
-            // }
             return LayoutBuilder(
               builder: (context, constraints) {
                 return PopScope(
@@ -112,7 +97,7 @@ class _HomePageState extends State<_HomePage> {
                       globalKey: widget._key,
                     ),
                     body:
-                        state.products.isLoading
+                        state.dummyProducts.isLoading
                             ? Center(
                               child: Center(
                                 child: CircularProgressIndicator.adaptive(),
@@ -154,6 +139,7 @@ class _HomePageState extends State<_HomePage> {
                                   55.responsiveHeight(),
                                   Align(
                                     alignment: Alignment.center,
+                                    heightFactor: 1,
                                     child: ProductBodyWidget(
                                       products: products,
                                     ),
@@ -175,20 +161,10 @@ class _HomePageState extends State<_HomePage> {
                                   36.responsiveHeight(),
                                   OutlinedButton(
                                     onPressed: () {
-                                      print(
-                                        '==-=-=-=-=-=- ${state.dummyProducts.data}',
-                                      );
                                       context.go(
                                         "/products",
                                         extra: state.dummyProducts.data!,
                                       );
-                                      // Get.to(() {
-                                      //   return ProductFilterPage(
-                                      //     products:
-                                      //        ,
-                                      //
-                                      //   );
-                                      // });
                                     },
                                     style: OutlinedButton.styleFrom(
                                       side: const BorderSide(
@@ -213,8 +189,8 @@ class _HomePageState extends State<_HomePage> {
                                   constraints.maxWidth > 850
                                       ? DressStyleWidget()
                                       : Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0,
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 8.0.w,
                                         ),
                                         child: DressStyleWidget(),
                                       ),
@@ -313,7 +289,7 @@ class _HomePageState extends State<_HomePage> {
                   Padding(
                     padding: EdgeInsets.only(right: 24.w),
                     child: Text(
-                      "STAY UPTO DATE ABOUT\n OUR LATEST OFFERS",
+                      "STAY UP TO DATE ABOUT\n OUR LATEST OFFERS",
                       style: TextStyles.boldFont(
                         fontSize:
                             constraints.maxWidth > 800

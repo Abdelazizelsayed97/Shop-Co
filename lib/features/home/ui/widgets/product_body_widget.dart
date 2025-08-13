@@ -1,5 +1,5 @@
 import 'package:e_commerce_web_app/core/models/product_entity_model.dart';
-import 'package:e_commerce_web_app/features/home/ui/widgets/product_item_builder.dart';
+import 'package:e_commerce_web_app/features/products/ui/widgets/product_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,11 +17,10 @@ class ProductBodyWidget extends StatelessWidget {
         shrinkWrap: true,
         itemCount: 4,
         scrollDirection: Axis.horizontal,
-
         itemBuilder: (context, index) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: ProductItemBuilder(product: products[index]),
+            child: ProductItemBuilder(product: products[index], isLocal: false),
           );
         },
       ),

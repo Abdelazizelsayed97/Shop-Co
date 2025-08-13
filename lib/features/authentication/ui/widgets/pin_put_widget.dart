@@ -1,18 +1,22 @@
-import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
+import 'package:e_commerce_web_app/core/utils/local_hive_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../../core/utils/const_strings.dart';
-import '../../../../core/utils/shared_prefs.dart';
 import '../manager/cubit/otp/otp_cubit.dart';
 
 class CodeVerificationField extends StatefulWidget {
-  const CodeVerificationField({super.key, required this.message});
+  const CodeVerificationField({
+    super.key,
+    required this.message,
+    required this.email,
+  });
 
   final void Function(String message) message;
+  final String email;
 
   @override
   State<CodeVerificationField> createState() => _CodeVerificationFieldState();
@@ -43,13 +47,13 @@ class _CodeVerificationFieldState extends State<CodeVerificationField> {
     return BlocListener<OtpCodeCubit, OtpCodeState>(
       listener: (context, state) {
         if (state.verifyEmailState.isSuccess) {
-          final String token = SharedPrefs.getFromShared(
-            key: ConstStrings.token,
+          HiveStorageService.service.saveModel(
+            boxName: "CurrentUser",
+            key: "CurrentUser",
+            model: state.verifyEmailState.data,
+            toJson: (p0) => p0?.toJson() ?? {},
           );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Email verified successfully")),
-          );
-          if (token.isNotEmpty && token != "") {}
+          context.goNamed("/");
         } else if (state.verifyResetPasswordState.isSuccess) {}
       },
       child: BlocBuilder<OtpCodeCubit, OtpCodeState>(
@@ -65,10 +69,15 @@ class _CodeVerificationFieldState extends State<CodeVerificationField> {
                     // smsRetriever: smsRetriever,
                     controller: pinController,
                     focusNode: focusNode,
-                    separatorBuilder:
-                        (index) => SizedBox(width: 8.responsiveW()),
+                    separatorBuilder: (index) => SizedBox(width: 8.w),
                     hapticFeedbackType: HapticFeedbackType.lightImpact,
-                    onCompleted: (pin) {},
+                    onCompleted: (pin) {
+                      print('completted ${pin}');
+                      context.read<OtpCodeCubit>().verifyResetPassword(
+                        widget.email,
+                        pin,
+                      );
+                    },
                     pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                     defaultPinTheme: PinTheme(
                       height: 45.h,
@@ -79,6 +88,9 @@ class _CodeVerificationFieldState extends State<CodeVerificationField> {
                               state.verifyEmailState.isSuccess ||
                                       state.verifyResetPasswordState.isSuccess
                                   ? Colors.green
+                                  : state.verifyEmailState.isFailure ||
+                                      state.verifyResetPasswordState.isFailure
+                                  ? Colors.red
                                   : Colors.grey.shade300,
                         ),
                         borderRadius: BorderRadius.circular(4.r),

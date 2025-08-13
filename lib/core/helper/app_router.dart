@@ -1,9 +1,10 @@
 import 'package:e_commerce_web_app/features/authentication/ui/manager/cubit/authentication_cubit.dart';
 import 'package:e_commerce_web_app/features/authentication/ui/pages/login_page.dart';
 import 'package:e_commerce_web_app/features/authentication/ui/pages/register_page.dart';
+import 'package:e_commerce_web_app/features/cart/ui/pages/pages/order_page.dart';
 import 'package:e_commerce_web_app/features/home/ui/pages/home_page.dart';
-import 'package:e_commerce_web_app/features/home/ui/pages/product_filter_page.dart';
-import 'package:e_commerce_web_app/features/home/ui/pages/product_page.dart';
+import 'package:e_commerce_web_app/features/products/ui/pages/product_filter_page.dart';
+import 'package:e_commerce_web_app/features/products/ui/pages/product_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/authentication/ui/pages/otp_page.dart';
 import '../../features/cart/ui/pages/pages/cart_page.dart';
 import '../../features/profile/ui/pages/profile_page.dart';
+import '../models/product_entity_model.dart';
 
 final _globalKey = GlobalKey<NavigatorState>();
 
@@ -21,15 +23,18 @@ void navigateTo(String route) {
 final GoRouter router = GoRouter(
   navigatorKey: _globalKey,
   initialLocation: '/',
+  observers: [_MyNavigatorObserver()],
   routes: [
     GoRoute(
       path: '/',
+      name: '/',
       builder: (context, state) {
         return HomePage();
       },
     ),
     GoRoute(
       path: '/products',
+      name: "/products",
       builder: (context, state) {
         // final data = state.extra as List<ProductEntityModel>;
         return ProductFilterPage();
@@ -37,6 +42,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/login',
+      name: "/login",
       builder: (context, state) {
         return const LoginPage();
       },
@@ -50,64 +56,95 @@ final GoRouter router = GoRouter(
           ),
       name: "/register",
     ),
-    GoRoute(path: "/cart", builder: (context, state) => CartPage()),
-    GoRoute(path: "/otp/:email", builder: (context, state) => OtpPage()),
-    GoRoute(path: "/profile", builder: (context, state) => ProfilePage()),
     GoRoute(
-      path: "/product",
-      builder: (context, state) => ProductDetailsPage(),
+      path: "/cart/:userId",
+      name: "/cart",
+      builder:
+          (context, state) =>
+              CartPage(id: state.pathParameters["userId"] ?? ""),
+    ),
+    GoRoute(
+      path: "/otp/:id",
+      name: "/otp",
+      builder: (context, state) {
+        return OtpPage(
+          email: state.extra as String,
+          id: state.pathParameters["id"] as String,
+        );
+      },
+    ),
+    GoRoute(
+      path: "/profile/:userId",
+      name: "/profile",
+      builder: (context, state) {
+        final id = state.pathParameters["userId"];
+        return ProfilePage(id: id ?? "");
+      },
+    ),
+    GoRoute(
+      path: "/product/:productId",
+      name: "/product",
+      builder: (context, state) {
+        return ProductDetailsPage(product: state.extra as ProductEntityModel);
+      },
+    ),
+    GoRoute(
+      path: "/order/:id",
+      name: "/order",
+      builder: (context, state) => OrderPage(),
     ),
   ],
 );
 
 class _MyNavigatorObserver extends NavigatorObserver {
-  // This list will store the history of route paths.
   final List<String> _routeHistory = [];
 
   List<String> get routeHistory => List.unmodifiable(_routeHistory);
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    if (route.settings.name != null) {
-      _routeHistory.add(route.settings.name!);
-      debugPrint(
-        'Pushed route: ${route.settings.name}, History: $_routeHistory',
-      );
+    final routeName = route.settings.name;
+    if (routeName != null) {
+      _routeHistory.add(routeName);
+      debugPrint('Pushed route: $routeName, History: $_routeHistory');
     }
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    if (_routeHistory.isNotEmpty) {
-      _routeHistory.removeLast();
-      debugPrint(
-        'Popped route: ${route.settings.name}, History: $_routeHistory',
-      );
+    final routeName = route.settings.name;
+    if (_routeHistory.isNotEmpty && routeName != null) {
+      if (routeName == _routeHistory.last) {
+        _routeHistory.removeLast();
+      } else if (_routeHistory.isNotEmpty) {
+        _routeHistory.add("/");
+      } else {
+        _routeHistory.remove(routeName);
+      }
+      debugPrint('Popped route: $routeName, History: $_routeHistory');
     }
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    if (newRoute?.settings.name != null && _routeHistory.isNotEmpty) {
-      _routeHistory[_routeHistory.length - 1] = newRoute!.settings.name!;
+    final newRouteName = newRoute?.settings.name;
+    if (newRouteName != null && _routeHistory.isNotEmpty) {
+      _routeHistory[_routeHistory.length - 1] = newRouteName;
+      debugPrint('Replaced route: $newRouteName, History: $_routeHistory');
+    } else if (newRouteName != null) {
+      _routeHistory.add(newRouteName);
       debugPrint(
-        'Replaced route: ${newRoute.settings.name}, History: $_routeHistory',
-      );
-    } else if (newRoute?.settings.name != null) {
-      _routeHistory.add(newRoute!.settings.name!);
-      debugPrint(
-        'Replaced (added) route: ${newRoute.settings.name}, History: $_routeHistory',
+        'Replaced (added) route: $newRouteName, History: $_routeHistory',
       );
     }
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    if (route.settings.name != null) {
-      _routeHistory.removeWhere((path) => path == route.settings.name);
-      debugPrint(
-        'Removed route: ${route.settings.name}, History: $_routeHistory',
-      );
+    final routeName = route.settings.name;
+    if (routeName != null) {
+      _routeHistory.removeWhere((path) => path == routeName);
+      debugPrint('Removed route: $routeName, History: $_routeHistory');
     }
   }
 }

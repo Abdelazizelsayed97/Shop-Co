@@ -15,6 +15,5 @@ void main() async {
   await SharedPrefs.sharedInitialization();
   await HiveStorageService.init();
   usePathUrlStrategy();
-  // router.goNamed("/");
   runApp(const MyApp());
 }

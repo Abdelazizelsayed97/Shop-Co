@@ -7,6 +7,7 @@ import 'package:e_commerce_web_app/features/home/data/di/home_di.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../features/authentication/domain/use_case/verify_email_use_case.dart';
 import '../../features/cart/data/di/cart_di.dart';
 import '../../features/profile/data/di/profile_di.dart';
 
@@ -20,10 +21,11 @@ class AppDi {
     injector.registerLazySingleton<SignUpUseCase>(
       () => SignUpUseCase(injector()),
     );
-    injector.registerLazySingleton<AuthRepository>(
-      () => AuthRepositoryImpl(injector()),
-    );
+    injector.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
     injector.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+    injector.registerLazySingleton<VerifyEmailUseCase>(
+      () => VerifyEmailUseCase(injector()),
+    );
     injector.registerFactory<AuthenticationCubit>(() => AuthenticationCubit());
     HomeDi.init();
     CartDi.instance.init();

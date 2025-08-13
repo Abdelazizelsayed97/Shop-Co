@@ -64,7 +64,6 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
     super.initState();
     focusNode.addListener(() {
       setState(() {
-        focusNode.canRequestFocus;
         validationMessage = widget.message;
       });
     });
@@ -89,7 +88,6 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         child: TextFormField(
           onTap: widget.onTap,
           inputFormatters: [if (widget.formatter != null) ...widget.formatter!],
-          canRequestFocus: true,
           focusNode: focusNode,
           autofocus: true,
           onChanged: widget.onChanged,

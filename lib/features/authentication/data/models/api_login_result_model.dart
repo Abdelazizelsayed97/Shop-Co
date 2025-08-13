@@ -69,13 +69,14 @@ class ApiUserModel {
   });
 
   factory ApiUserModel.fromJson(Map<String, dynamic> json) => ApiUserModel(
-    id: json["_id"],
+    id: json["id"],
     firstName: json["firstName"],
     lastName: json["lastName"],
     email: json["email"],
     password: json["password"],
     phone: json["phone"],
     address: json["address"],
+
     city: json["city"],
     role: json["role"],
     image: json["image"],

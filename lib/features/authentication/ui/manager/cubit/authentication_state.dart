@@ -2,7 +2,7 @@ part of 'authentication_cubit.dart';
 
 class AuthenticationState extends Equatable {
   final Async<UserInfoEntity> loginState;
-  final Async<UserInfoEntity> signUpState;
+  final Async<String> signUpState;
   const AuthenticationState({
     required this.loginState,
     required this.signUpState,
@@ -15,7 +15,7 @@ class AuthenticationState extends Equatable {
   }
   AuthenticationState reduce({
     Async<UserInfoEntity>? loginState,
-    Async<UserInfoEntity>? signUpState,
+    Async<String>? signUpState,
   }) {
     return AuthenticationState(
       loginState: loginState ?? this.loginState,

@@ -26,7 +26,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
             _userData = value;
           }
         });
-    print('current user ${_userData}');
     final response = await _httpService.get(
       "${ProfileEndPoints.getUserById}/${_userData?.id}",
     );
@@ -49,7 +48,40 @@ class ProfileRepositoryImpl implements ProfileRepository {
           )
           .then((value) {
             if (value?.token != null) {
-              print('hhheeehy');
+              return value?.token;
+            }
+          });
+      final response = await _httpService.post(
+        AuthEndPoints.logOutEndPoint,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      print(response.body);
+      if (response.statusCode != 200) {
+        return Left(ApiError(message: "Something want wrong"));
+      } else {
+        await HiveStorageService.service.deleteModel(
+          boxName: "CurrentUser",
+          key: "CurrentUser",
+        );
+        return Right(unit);
+      }
+    } catch (e) {
+      print(e.toString());
+      return Left(ApiError(message: "Something want wrong"));
+    }
+  }
+
+  @override
+  Future<Either<ApiError, Unit>> changePassword() async {
+    try {
+      var token = await HiveStorageService.service
+          .getModel(
+            boxName: "CurrentUser",
+            key: "CurrentUser",
+            fromJson: (p0) => UserInfoEntity.fromJson(p0),
+          )
+          .then((value) {
+            if (value?.token != null) {
               return value?.token;
             }
           });
@@ -60,7 +92,6 @@ class ProfileRepositoryImpl implements ProfileRepository {
       if (response.statusCode != 200) {
         return Left(ApiError(message: "Something want wrong"));
       } else {
-        print('success');
         await HiveStorageService.service.deleteModel(
           boxName: "CurrentUser",
           key: "CurrentUser",
@@ -70,5 +101,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
     } catch (e) {
       return Left(ApiError(message: "Something want wrong"));
     }
+  }
+
+  @override
+  Future<Either<ApiError, Unit>> updateProfile() {
+    // TODO: implement updateProfile
+    throw UnimplementedError();
   }
 }

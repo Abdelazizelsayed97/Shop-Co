@@ -13,7 +13,8 @@ import '../managers/cart_cubit.dart';
 import '../widgets/cart_card_widget.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+  const CartPage({super.key, required this.id});
+  final String id;
 
   @override
   Widget build(BuildContext context) {

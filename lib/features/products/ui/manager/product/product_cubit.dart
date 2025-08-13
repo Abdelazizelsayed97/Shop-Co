@@ -4,7 +4,7 @@ import 'package:e_commerce_web_app/features/home/domain/use_case/fetch_product_d
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../../core/di/app_di.dart';
+import '../../../../../core/di/app_di.dart';
 
 part 'product_state.dart';
 
@@ -24,5 +24,9 @@ class ProductCubit extends Cubit<ProductState> {
       (l) => emit(state.reduce(fetchProducts: Async.failure(l.message ?? ""))),
       (r) => emit(state.reduce(fetchProducts: Async.success(r))),
     );
+  }
+
+  void fetchProductDetails() {
+    emit(state.reduce(productDetails: Async.initial()));
   }
 }

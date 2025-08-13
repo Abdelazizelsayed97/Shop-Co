@@ -1,48 +1,37 @@
 // To parse this JSON data, do
 //
-//     final apiShopCoResultModel = apiShopCoResultModelFromJson(jsonString);
+//     final apiGetProductByIdResultModel = apiGetProductByIdResultModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ApiShopCoResultModel apiShopCoResultModelFromJson(String str) =>
-    ApiShopCoResultModel.fromJson(json.decode(str));
+ApiGetProductByIdResultModel apiGetProductByIdResultModelFromJson(String str) =>
+    ApiGetProductByIdResultModel.fromJson(json.decode(str));
 
-String apiShopCoResultModelToJson(ApiShopCoResultModel data) =>
+String apiGetProductByIdResultModelToJson(ApiGetProductByIdResultModel data) =>
     json.encode(data.toJson());
 
-class ApiShopCoResultModel {
-  final List<ApiProductsModel>? products;
-  final int? page;
-  final int? limit;
+class ApiGetProductByIdResultModel {
+  final ApiProductModel? product;
   final String? message;
 
-  ApiShopCoResultModel({this.message, this.products, this.page, this.limit});
+  ApiGetProductByIdResultModel({this.product, this.message});
 
-  factory ApiShopCoResultModel.fromJson(Map<String, dynamic> json) =>
-      ApiShopCoResultModel(
-        products:
-            json["products"] == null
-                ? []
-                : List<ApiProductsModel>.from(
-                  json["products"]!.map((x) => ApiProductsModel.fromJson(x)),
-                ),
-        page: json["page"],
-        limit: json["limit"],
+  factory ApiGetProductByIdResultModel.fromJson(Map<String, dynamic> json) =>
+      ApiGetProductByIdResultModel(
+        product:
+            json["product"] == null
+                ? null
+                : ApiProductModel.fromJson(json["product"]),
         message: json["message"],
       );
 
   Map<String, dynamic> toJson() => {
-    "products":
-        products == null
-            ? []
-            : List<dynamic>.from(products!.map((x) => x.toJson())),
-    "page": page,
-    "limit": limit,
+    "product": product?.toJson(),
     "message": message,
   };
 }
 
-class ApiProductsModel {
+class ApiProductModel {
   final String? id;
   final String? productId;
   final String? name;
@@ -53,7 +42,7 @@ class ApiProductsModel {
   final double? rating;
   final int? stock;
 
-  ApiProductsModel({
+  ApiProductModel({
     this.id,
     this.productId,
     this.name,
@@ -65,8 +54,8 @@ class ApiProductsModel {
     this.stock,
   });
 
-  factory ApiProductsModel.fromJson(Map<String, dynamic> json) =>
-      ApiProductsModel(
+  factory ApiProductModel.fromJson(Map<String, dynamic> json) =>
+      ApiProductModel(
         id: json["_id"],
         productId: json["id"],
         name: json["name"],
