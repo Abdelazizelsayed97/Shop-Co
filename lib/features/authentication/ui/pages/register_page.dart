@@ -42,6 +42,7 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
   late CompleteCheckerNotifier isEnabled;
   bool isHiddenPassword = true;
   bool isHiddenConfirmPassword = true;
+  late AuthenticationCubit cubit;
   @override
   void initState() {
     isEnabled = CompleteCheckerNotifier(
@@ -54,7 +55,21 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
           _confirmPasswordController.text.isNotEmpty,
     );
     _RegisterPageBodyState();
+    cubit = context.read<AuthenticationCubit>();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    isEnabled.dispose();
+    cubit.close();
+    super.dispose();
   }
 
   @override
@@ -63,7 +78,11 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
       listener: (context, state) {
         if (state.signUpState.isSuccess) {
           print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-          context.go("/otp", extra: state.signUpState.data);
+          context.goNamed(
+            "/otp",
+            extra: _emailController.text,
+            pathParameters: {"id": state.signUpState.data ?? ""},
+          );
         }
         if (state.signUpState.isFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -240,7 +259,6 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                         16.responsiveHeight(),
                         AppTextFormField(
                           label: "Confirm Password",
-
                           controller: _confirmPasswordController,
                           autoValidateMode: AutovalidateMode.always,
                           validator: (p0) {
@@ -274,10 +292,13 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                         ValueListenableBuilder(
                           builder: (context, value, child) {
                             return AppPrimaryButton(
-                              onTap: () {
-                                setState(() {});
-                                _registerPress();
-                              },
+                              onTap:
+                                  value
+                                      ? () {
+                                        setState(() {});
+                                        _registerPress();
+                                      }
+                                      : null,
                               isLoading: false,
                               colors:
                                   value

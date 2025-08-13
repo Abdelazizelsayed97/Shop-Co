@@ -1,5 +1,5 @@
 import 'package:e_commerce_web_app/features/home/ui/widgets/app_bar_widget.dart';
-import 'package:e_commerce_web_app/features/home/ui/widgets/product_item_builder.dart';
+import 'package:e_commerce_web_app/features/products/ui/widgets/product_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../../core/models/product_entity_model.dart';
-import '../manager/cubit/product/product_cubit.dart';
+import '../manager/product/product_cubit.dart';
 import '../widgets/filer_side_widget.dart';
 
 class ProductFilterPage extends StatelessWidget {
@@ -120,7 +120,10 @@ class _ProductFilterPageState extends State<_ProductFilterPage> {
                                 //   routeName: "Product-$index",
                                 // );
                               },
-                              child: ProductItemBuilder(product: item),
+                              child: ProductItemBuilder(
+                                product: item,
+                                isLocal: false,
+                              ),
                             );
                           },
                         ),

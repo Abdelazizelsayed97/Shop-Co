@@ -1,4 +1,4 @@
-const String appEndpoint = "https://shop-co-api-dev.up.railway.app/";
+const String appEndpoint = "https://shop-co-api.up.railway.app/";
 
 class ConstStrings {
   static const String baseUrl = "https://api.escuelajs.co/graphql";

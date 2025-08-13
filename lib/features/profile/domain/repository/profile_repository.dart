@@ -5,4 +5,6 @@ import 'package:e_commerce_web_app/features/authentication/domain/entity/user_en
 abstract class ProfileRepository {
   Future<Either<ApiError, UserInfoEntity>> fetchUserData();
   Future<Either<ApiError, Unit>> logout();
+  Future<Either<ApiError, Unit>> updateProfile();
+  Future<Either<ApiError, Unit>> changePassword();
 }

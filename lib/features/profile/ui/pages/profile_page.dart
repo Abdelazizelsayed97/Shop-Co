@@ -6,12 +6,14 @@ import 'package:e_commerce_web_app/features/profile/ui/managers/profile_cubit.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/utils/text_styles.dart';
 import '../../../authentication/domain/entity/user_entity.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({super.key, required this.id});
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -52,16 +54,33 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProfileCubit, ProfileState>(
-      listener: (context, state) {
-        if (state.fetchUserData.isSuccess) {
-          // _userData = state.fetchUserData.data;
-        } else if (state.fetchUserData.isFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.fetchUserData.failureMessage ?? "")),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state.fetchUserData.isSuccess) {
+              // _userData = state.fetchUserData.data;
+            } else if (state.fetchUserData.isFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.fetchUserData.failureMessage ?? ""),
+                ),
+              );
+            }
+          },
+        ),
+        BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state.logOut.isSuccess) {
+              context.go('/login');
+            } else if (state.logOut.isFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.logOut.failureMessage ?? "")),
+              );
+            }
+          },
+        ),
+      ],
       child: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
           if (state.fetchUserData.isLoading) {
@@ -75,6 +94,7 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
                   globalKey: globalKey,
                 ),
                 body: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Sidebar
                     Expanded(
@@ -117,9 +137,10 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
                     Expanded(
                       flex: 5,
                       child: Padding(
-                        padding: EdgeInsets.all(32.0.w),
+                        padding: EdgeInsets.all(32.0.dm),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               "Edit Your Profile",
@@ -185,7 +206,8 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
                               isPassword: true,
                             ),
                             SizedBox(height: 24.h),
-                            Row(
+                            Flex(
+                              direction: Axis.horizontal,
                               children: [
                                 TextButton(
                                   onPressed: () {},
@@ -209,6 +231,24 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
                                   ),
                                 ),
                               ],
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: AppPrimaryButton(
+                                width: 200.w,
+                                height: 48.h,
+                                onTap: () {
+                                  context.read<ProfileCubit>().logOut();
+                                },
+                                colors: AppColors.orangeRedGradientList,
+                                child: Text(
+                                  "Log out",
+                                  style: TextStyles.boldFont(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),

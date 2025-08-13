@@ -6,7 +6,7 @@ import 'package:e_commerce_web_app/features/authentication/domain/entity/user_en
 
 abstract class AuthRepository {
   Future<Either<String, UserInfoEntity>> login(LoginInput input);
-  Future<Either<String, UserInfoEntity>> register(RegisterInput input);
+  Future<Either<String, String>> register(RegisterInput input);
   Future<Either<String, String>> forgetPassword(String email);
   Future<Either<String, String>> resetPassword(
     String email,
@@ -16,5 +16,4 @@ abstract class AuthRepository {
     String email,
     String otp,
   );
-  Future<Either<ApiError, Unit>> signOut();
 }

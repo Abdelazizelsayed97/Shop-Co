@@ -72,7 +72,6 @@ class _LoginPageState extends State<_LoginPage>
     return BlocListener<AuthenticationCubit, AuthenticationState>(
       listener: (context, state) {
         if (state.loginState.isSuccess) {
-          print('user data ====> ${state.loginState.data}');
           SharedPrefs.saveToShard(
             key: ConstStrings.token,
             value: state.loginState.data?.token ?? "",
@@ -109,7 +108,6 @@ class _LoginPageState extends State<_LoginPage>
                   : constraints.maxWidth > 600
                   ? MediaQuery.of(context).size.width * 0.15
                   : 16.0;
-
           return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -178,7 +176,7 @@ class _LoginPageState extends State<_LoginPage>
             height: 56.h,
             autoValidateMode: AutovalidateMode.onUserInteraction,
           ),
-          16.responsiveHeight(),
+          SizedBox(height: 16.h),
           AppTextFormField(
             label: "Password",
             controller: _passwordController,
@@ -204,7 +202,7 @@ class _LoginPageState extends State<_LoginPage>
                     : Icons.remove_red_eye,
               ),
             ),
-            opsCureText: true,
+            opsCureText: _isObscure,
           ),
           SizedBox(height: 16.h),
           ValueListenableBuilder<bool>(

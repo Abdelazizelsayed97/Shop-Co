@@ -2,33 +2,19 @@ import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce_web_app/core/utils/const_strings.dart';
-import 'package:e_commerce_web_app/core/utils/http_services.dart';
+import 'package:e_commerce_web_app/core/utils/dio_service.dart';
 import 'package:e_commerce_web_app/features/authentication/data/mapper/auth_mapper.dart';
 import 'package:e_commerce_web_app/features/authentication/data/models/api_login_result_model.dart';
 import 'package:e_commerce_web_app/features/authentication/domain/entity/input/login_input.dart';
 import 'package:e_commerce_web_app/features/authentication/domain/entity/input/register_input.dart';
 import 'package:e_commerce_web_app/features/authentication/domain/entity/user_entity.dart';
 import 'package:e_commerce_web_app/features/authentication/domain/repository/auth_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/helper/api_error_handler.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
-  final FirebaseAuth _firebaseAuth;
-  HttpService httpService = HttpService(baseUrl: appEndpoint);
-
-  AuthRepositoryImpl(this._firebaseAuth);
-
-  @override
-  Future<Either<ApiError, Unit>> signOut() async {
-    await _firebaseAuth.signOut();
-    if (_firebaseAuth.currentUser == null) {
-      return Right(unit);
-    } else {
-      return Left(ApiError(message: "Failed toƒ sign out"));
-    }
-  }
+  HttpService httpService = HttpService();
 
   @override
   Future<Either<String, UserInfoEntity>> login(LoginInput input) async {
@@ -38,68 +24,41 @@ class AuthRepositoryImpl extends AuthRepository {
       headers: headers,
       body: jsonEncode({'email': input.email, 'password': input.password}),
     );
-    print('---- ${response.body}');
     final data = ApiSignInResultModel.fromJson(jsonDecode(response.body));
     if (response.statusCode == 200) {
-      print(response.body);
       return Right(data.user?.convertToEntity() ?? UserInfoEntity());
     } else {
-      print(response.reasonPhrase);
       return Left(data.message ?? "");
-    }
-  }
-
-  Future<Either<String, bool>> sendResetOtp(String email) async {
-    try {
-      final res = await httpService.post(AuthEndPoints.forgetPassword, {
-        'email': email,
-      });
-      return res.statusCode == 200 ? Right(true) : Left("OTP request failed");
-    } catch (e) {
-      return Left("Error: $e");
-    }
-  }
-
-  Future<Either<String, bool>> verifyResetOtp(Map<String, dynamic> data) async {
-    try {
-      final res = await httpService.post(AuthEndPoints.verifyResetOtp, data);
-      return res.statusCode == 200 ? Right(true) : Left("Invalid OTP");
-    } catch (e) {
-      return Left("Error: $e");
     }
   }
 
   @override
   Future<Either<String, String>> forgetPassword(String email) {
-    // TODO: implement forgetPassword
     throw UnimplementedError();
   }
 
   @override
   Future<Either<ApiError, UserInfoEntity>> verifyEmail(
-    String email,
+    String userId,
     String otp,
   ) async {
-    final response = await http.post(
-      Uri.parse(appEndpoint + AuthEndPoints.verifyEmail),
-      body: {"email": email, "otp": otp},
-      headers: {'Content-Type': 'application/json'},
+    final response = await httpService.post(
+      AuthEndPoints.verifyEmail,
+      body: {"userId": userId, "otp": otp},
     );
-    print('---- ${response.body}');
+    print('data entered $userId $otp');
     final data = ApiSignInResultModel.fromJson(jsonDecode(response.body));
     if (response.statusCode == 200) {
-      print(response.body);
       return Right(data.user?.convertToEntity() ?? UserInfoEntity());
     } else {
-      print(response.reasonPhrase);
       return Left(ApiError(message: data.message ?? ""));
     }
   }
 
   @override
-  Future<Either<String, UserInfoEntity>> register(RegisterInput input) async {
-    final response = await http.post(
-      Uri.parse(appEndpoint + AuthEndPoints.registerEndPoint),
+  Future<Either<String, String>> register(RegisterInput input) async {
+    final response = await httpService.post(
+      AuthEndPoints.registerEndPoint,
       body: {
         "email": input.email,
         "password": input.password,
@@ -107,16 +66,14 @@ class AuthRepositoryImpl extends AuthRepository {
         "lastName": input.lastName,
         "phone": input.phone,
       },
-      headers: {'Content-Type': 'application/json'},
     );
-    print('---- ${response.body}');
-    final data = ApiSignInResultModel.fromJson(jsonDecode(response.body));
-    if (response.statusCode == 200) {
-      print(response.body);
-      return Right(data.user?.convertToEntity() ?? UserInfoEntity());
+    print("bodddyy ${response.body}");
+    print('decoding  ${jsonDecode(response.body)["userId"]}');
+    final data = jsonDecode(response.body);
+    if (response.statusCode == 202) {
+      return Right(data["userId"]);
     } else {
-      print(response.reasonPhrase);
-      return Left(data.message ?? "");
+      return Left(data["message"]);
     }
   }
 
@@ -124,8 +81,17 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<String, String>> resetPassword(
     String email,
     String newPassword,
-  ) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
+  ) async {
+    final response = await httpService.post(
+      AuthEndPoints.resetPassword,
+      body: {"email": email, "password": newPassword},
+    );
+
+    final data = ApiSignInResultModel.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      return Right("Password reset successfully");
+    } else {
+      return Left(data.message ?? "");
+    }
   }
 }

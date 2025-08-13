@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_web_app/core/models/product_entity_model.dart';
+import 'package:e_commerce_web_app/core/utils/app_colors.dart';
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:e_commerce_web_app/core/utils/text_styles.dart';
-import 'package:e_commerce_web_app/features/home/ui/pages/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax/iconsax.dart';
 
 class ProductItemBuilder extends StatefulWidget {
   const ProductItemBuilder({super.key, required this.product, this.isLocal});
@@ -34,32 +32,41 @@ class _ProductItemBuilderState extends State<ProductItemBuilder> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.push("/products");
-        Get.to(() => ProductDetailsPage(products: widget.product));
+        print(' product ${widget.product.id}');
+        context.goNamed(
+          "/product",
+          extra: widget.product,
+          pathParameters: {"productId": widget.product.id ?? ""},
+        );
       },
+      borderRadius: BorderRadius.circular(8.r),
       child: LayoutBuilder(
         builder: (context, constrains) {
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              (widget.product.images?[0].isNotEmpty ?? false)
+              (widget.product.images?[0].isNotEmpty ?? false) &&
+                      widget.isLocal == false
                   ? CachedNetworkImage(
-                    fit: BoxFit.scaleDown,
-
                     imageUrl: widget.product.images?[0] ?? "",
                     // height: getItemHeight(constrains, context),
-                    errorWidget: (context, url, error) {
-                      return Icon(Iconsax.warning_2, color: Colors.red);
-                    },
+                    fit: BoxFit.cover,
+                    height: (3.7 / 7) * constrains.maxHeight,
+                    errorWidget:
+                        (context, url, error) => Placeholder(
+                          color: AppColors.appBackGroundColor,
+                          child: Container(color: Colors.grey.shade200),
+                        ),
                   )
                   : Image.asset(widget.product.images?[0] ?? ""),
               16.responsiveHeight(),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0.r),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       widget.product.name ?? "",

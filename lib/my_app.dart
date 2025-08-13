@@ -1,7 +1,7 @@
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_utils/src/platform/platform.dart';
 
 import 'core/helper/app_router.dart';
 
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       useInheritedMediaQuery: true,
       minTextAdapt: true,
       designSize:
-          GetPlatform.isWeb
+          kIsWeb
               ? Size(
                 MediaQuery.of(context).size.width,
                 MediaQuery.of(context).size.height,

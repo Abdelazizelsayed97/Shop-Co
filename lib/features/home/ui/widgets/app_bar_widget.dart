@@ -103,7 +103,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
 
   List<Widget> get _buildAppBar {
     return [
-      Image.asset("lib/assets/images/logo.png", height: 24.h),
+      GestureDetector(
+        onTap: () {
+          context.go("/");
+        },
+        child: Image.asset("lib/assets/images/logo.png", height: 24.h),
+      ),
       verticalSpacer(20),
       if (MediaQuery.of(context).size.width > 950) ...[
         Padding(
@@ -118,7 +123,6 @@ class _AppBarWidgetState extends State<AppBarWidget> {
                       context: context,
                       position: const RelativeRect.fromLTRB(0, 0, 0, 0),
                       useRootNavigator: true,
-
                       items: [
                         PopupMenuItem(child: Text("Shop")),
                         PopupMenuItem(child: Text("On Sale")),
@@ -157,7 +161,11 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         ),
 
         GestureDetector(
-          onTap: () => context.go("/cart"),
+          onTap:
+              () => context.goNamed(
+                "/cart",
+                pathParameters: {"userId": userData?.id ?? ""},
+              ),
           child: Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w),
             child: Icon(Icons.shopping_cart),
@@ -167,7 +175,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           AppPrimaryButton(
             colors: [Colors.black, Colors.black87, Colors.black54],
             width: MediaQuery.of(context).size.width > 800 ? 130.w : 100.w,
-            onTap: () => context.push("/login"),
+            onTap: () => context.go("/login"),
             child: Text(
               "Get start",
               overflow: TextOverflow.visible,
@@ -178,9 +186,12 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           IconButton(
             icon: Icon(Iconsax.profile_circle, size: 28.r),
             onPressed: () {
-              print('--=-=-=-=-=-=- ${userData}');
               if (ModalRoute.of(context)?.settings.name != "/profile") {
-                context.push("/profile");
+                context.goNamed(
+                  "/profile",
+                  pathParameters: {"userId": userData?.id ?? ""},
+                  // queryParameters: {"id": userData?.id ?? ""},
+                );
               }
             },
           ),
