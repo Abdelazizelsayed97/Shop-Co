@@ -4,6 +4,7 @@ import 'package:e_commerce_web_app/features/home/ui/widgets/app_bar_widget.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../../../../core/models/product_entity_model.dart';
@@ -240,7 +241,9 @@ class _CartPageBodyState extends State<_CartPageBody> {
           ),
           SizedBox(height: 24.h),
           AppPrimaryButton(
-            onTap: () {},
+            onTap: () {
+              context.go('/checkout');
+            },
             isLoading: false,
             colors: AppColors.unFollowListColors,
             child: Text(

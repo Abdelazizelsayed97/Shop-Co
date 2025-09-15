@@ -1,3 +1,4 @@
+import 'package:e_commerce_web_app/features/cart/domain/use_cases/add_to_cart_use_case.dart';
 import 'package:e_commerce_web_app/features/cart/domain/use_cases/get_user_cart_use_case.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,8 +14,10 @@ class CartCubit extends Cubit<CartState> {
     init();
   }
   late GetUserCartUseCase _getUserCartUseCase;
+  late AddToCartUseCase _addToCartUseCase;
   init() {
     _getUserCartUseCase = injector();
+    _addToCartUseCase = injector();
   }
 
   void getUserCart(String userId) async {
@@ -25,6 +28,15 @@ class CartCubit extends Cubit<CartState> {
         state.reduce(fetchedCartProducts: Async.failure(l.message ?? "")),
       ),
       (r) => emit(state.reduce(fetchedCartProducts: Async.success(r))),
+    );
+  }
+
+  void addToCart(String productId) async {
+    emit(state.reduce(addToCart: Async.loading()));
+    final result = await _addToCartUseCase.execute(productId);
+    result.fold(
+      (l) => emit(state.reduce(addToCart: Async.failure(l.message ?? ""))),
+      (r) => emit(state.reduce(addToCart: Async.success(r))),
     );
   }
 }

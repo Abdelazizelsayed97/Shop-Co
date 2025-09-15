@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../features/authentication/domain/use_case/verify_email_use_case.dart';
 import '../../features/cart/data/di/cart_di.dart';
+import '../../features/products/data/di/product_di.dart';
 import '../../features/profile/data/di/profile_di.dart';
 
 final injector = GetIt.instance;
@@ -30,5 +31,6 @@ class AppDi {
     HomeDi.init();
     CartDi.instance.init();
     ProfileDi.init();
+    ProductDi().init();
   }
 }

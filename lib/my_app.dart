@@ -1,3 +1,4 @@
+import 'package:e_commerce_web_app/core/utils/app_theme.dart';
 import 'package:e_commerce_web_app/core/utils/responsive_by_media_query.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,10 +39,7 @@ class _MyAppState extends State<MyApp> {
               : Size(375, 812),
       builder:
           (context, child) => MaterialApp.router(
-            theme: ThemeData(
-              scaffoldBackgroundColor: Colors.white,
-              appBarTheme: AppBarTheme(backgroundColor: Colors.black),
-            ),
+            theme: AppTheme.lightTheme,
             debugShowCheckedModeBanner: false,
             routerConfig: router,
           ),

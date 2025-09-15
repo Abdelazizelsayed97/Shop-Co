@@ -26,7 +26,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
     if (response.statusCode == 200) {
       return Right(data.toEntity());
     } else {
-      return Left(ApiError());
+      return Left(ApiError(message: data.message ?? "Something went wrong"));
     }
   }
 

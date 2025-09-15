@@ -118,15 +118,18 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
                             SizedBox(height: 24.h),
                             Text(
                               "My Orders",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             SizedBox(height: 16.h),
+                            _sidebarItem("Order History", onTap: () {
+                              context.go('/order-history');
+                            }),
                             _sidebarItem("My Returns"),
                             _sidebarItem("My Cancellations"),
                             SizedBox(height: 24.h),
                             Text(
                               "My WishList",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ],
                         ),
@@ -302,14 +305,17 @@ class _ProfilePageBodyState extends State<_ProfilePageBody> {
     );
   }
 
-  Widget _sidebarItem(String title, {bool selected = false}) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.h),
-      child: Text(
-        title,
-        style: TextStyle(
-          color: selected ? Colors.red : Colors.grey.shade700,
-          fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+  Widget _sidebarItem(String title, {bool selected = false, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4.h),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: selected ? Colors.red : Colors.grey.shade700,
+            fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+          ),
         ),
       ),
     );

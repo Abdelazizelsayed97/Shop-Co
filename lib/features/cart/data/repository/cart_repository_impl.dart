@@ -6,6 +6,7 @@ import 'package:e_commerce_web_app/core/models/product_entity_model.dart';
 import 'package:e_commerce_web_app/core/utils/dio_service.dart';
 import 'package:e_commerce_web_app/features/cart/data/mapper/product_model_mapper.dart';
 import 'package:e_commerce_web_app/features/cart/data/models/ai_cart_result_model.dart';
+import 'package:e_commerce_web_app/features/profile/domain/entity/order_entity.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/utils/const_strings.dart';
@@ -50,5 +51,20 @@ class CartRepositoryImpl implements CartRepository {
     } else {
       return Left(ApiError(message: "Something want wrong"));
     }
+  }
+
+  @override
+  Future<Either<ApiError, OrderEntity>> placeOrder(
+    List<ProductEntityModel> products,
+  ) async {
+    // TODO: implement placeOrder
+    return Right(
+      OrderEntity(
+        id: '3',
+        date: DateTime.now(),
+        products: products,
+        totalPrice: products.fold(0, (sum, item) => sum + (item.price ?? 0)),
+      ),
+    );
   }
 }
