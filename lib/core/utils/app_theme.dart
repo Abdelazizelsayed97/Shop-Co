@@ -11,7 +11,7 @@ class AppTheme {
     primaryColor: primaryColor,
     colorScheme: const ColorScheme.light(
       primary: primaryColor,
-      secondary: secondaryColor,
+      secondary: primaryColor,
       tertiary: accentColor,
     ),
     textTheme: GoogleFonts.robotoTextTheme(),
@@ -23,9 +23,7 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
         foregroundColor: secondaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
     ),
   );

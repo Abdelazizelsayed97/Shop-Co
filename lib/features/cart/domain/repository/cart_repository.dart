@@ -5,7 +5,7 @@ import 'package:e_commerce_web_app/features/profile/domain/entity/order_entity.d
 
 abstract class CartRepository {
   Future<Either<ApiError, List<ProductEntityModel>>> fetchCart(String userId);
-  Future<Either<ApiError, ProductEntityModel>> addToCart(String productId);
+  Future<Either<ApiError, void>> addToCart(String productId);
   Future<Either<ApiError, Unit>> removeFromCart(String productId);
   Future<Either<ApiError, OrderEntity>> placeOrder(List<ProductEntityModel> products);
 }

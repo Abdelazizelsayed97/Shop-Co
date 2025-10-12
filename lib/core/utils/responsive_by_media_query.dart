@@ -10,9 +10,7 @@ class SaveContext {
   BuildContext? context;
 
   void setBuildContext(BuildContext context) {
-    if (context == null) {
-      context = context;
-    }
+    context ??= context;
   }
 }
 
@@ -246,6 +244,6 @@ extension ResponsivePaddingExtension on int {
 
 extension ResponsiveSpaceExtension on int {
   Widget responsiveHeight() {
-    return SizedBox(height: this.h);
+    return SizedBox(height: h);
   }
 }

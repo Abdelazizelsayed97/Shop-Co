@@ -15,8 +15,17 @@ import '../../domain/repository/cart_repository.dart';
 class CartRepositoryImpl implements CartRepository {
   HttpService client = HttpService();
   @override
-  Future<Either<ApiError, ProductEntityModel>> addToCart(String productId) {
-    throw UnimplementedError();
+  Future<Either<ApiError, void>> addToCart(String productId) async {
+final response =await client.post(
+      CartEndPoints.fetchCart,
+      body: {"productId": productId},
+    );
+final data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return Right(unit);
+    } else {
+      return Left(ApiError(message: data.message??""));
+    }
   }
 
   @override

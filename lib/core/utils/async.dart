@@ -43,10 +43,10 @@ class Async<T> extends Equatable {
     bool? newLoading,
   }) {
     return Async._(
-      newData ?? this.data,
-      newFailureMessage ?? this.failureMessage,
-      newSuccessWithoutData ?? this._successWithoutData,
-      newLoading ?? this._loading,
+      newData ?? data,
+      newFailureMessage ?? failureMessage,
+      newSuccessWithoutData ?? _successWithoutData,
+      newLoading ?? _loading,
     );
   }
 

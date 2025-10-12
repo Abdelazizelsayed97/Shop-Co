@@ -14,6 +14,7 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
+
   @override
   void initState() {
     super.initState();

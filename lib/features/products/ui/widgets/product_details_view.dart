@@ -78,7 +78,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView>
                     Row(
                       children: [
                         Text(
-                          '${widget.product.price.toString()}',
+                          widget.product.price.toString(),
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         const SizedBox(width: 12),

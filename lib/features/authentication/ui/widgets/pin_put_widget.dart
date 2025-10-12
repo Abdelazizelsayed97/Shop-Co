@@ -46,7 +46,7 @@ class _CodeVerificationFieldState extends State<CodeVerificationField> {
   Widget build(BuildContext context) {
     return BlocListener<OtpCodeCubit, OtpCodeState>(
       listener: (context, state) {
-        if (state.verifyEmailState.isSuccess) {
+        if (state.verifyResetPasswordState.isSuccess) {
           HiveStorageService.service.saveModel(
             boxName: "CurrentUser",
             key: "CurrentUser",
@@ -54,6 +54,10 @@ class _CodeVerificationFieldState extends State<CodeVerificationField> {
             toJson: (p0) => p0?.toJson() ?? {},
           );
           context.goNamed("/");
+          print("Email verified successfully");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Email verified successfully")),
+          );
         } else if (state.verifyResetPasswordState.isSuccess) {}
       },
       child: BlocBuilder<OtpCodeCubit, OtpCodeState>(
@@ -66,13 +70,12 @@ class _CodeVerificationFieldState extends State<CodeVerificationField> {
                 Directionality(
                   textDirection: TextDirection.ltr,
                   child: Pinput(
-                    // smsRetriever: smsRetriever,
                     controller: pinController,
                     focusNode: focusNode,
                     separatorBuilder: (index) => SizedBox(width: 8.w),
                     hapticFeedbackType: HapticFeedbackType.lightImpact,
                     onCompleted: (pin) {
-                      print('completted ${pin}');
+                      print('completted $pin');
                       context.read<OtpCodeCubit>().verifyResetPassword(
                         widget.email,
                         pin,

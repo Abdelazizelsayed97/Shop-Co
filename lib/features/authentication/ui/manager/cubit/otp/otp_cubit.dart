@@ -34,9 +34,12 @@ class OtpCodeCubit extends Cubit<OtpCodeState> {
       (l) => emit(
         state.reduce(verifyResetPasswordState: Async.failure(l.message ?? "")),
       ),
-      (r) => emit(
-        state.reduce(verifyResetPasswordState: Async.successWithoutData()),
-      ),
+      (r) {
+        print("success verifyResetPassword");
+        emit(
+          state.reduce(verifyResetPasswordState: Async.successWithoutData()),
+        );
+      },
     );
   }
 }

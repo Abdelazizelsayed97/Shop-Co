@@ -16,7 +16,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   final HttpService _httpService = HttpService();
   @override
   Future<Either<ApiError, UserInfoEntity>> fetchUserData() async {
-    UserInfoEntity? _userData;
+    UserInfoEntity? userData;
     await HiveStorageService.service
         .getModel(
           boxName: "CurrentUser",
@@ -25,11 +25,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
         )
         .then((value) {
           if (value != null) {
-            _userData = value;
+            userData = value;
           }
         });
     final response = await _httpService.get(
-      "${ProfileEndPoints.getUserById}/${_userData?.id}",
+      "${ProfileEndPoints.getUserById}/${userData?.id}",
     );
     final data = ApiUserModel.fromJson(jsonDecode(response.body));
     if (response.statusCode == 201) {

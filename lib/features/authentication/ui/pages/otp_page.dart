@@ -40,6 +40,7 @@ class _OtpPageBodyState extends State<OtpPageBody> {
     return BlocListener<OtpCodeCubit, OtpCodeState>(
       listener: (context, state) {
         if (state.verifyEmailState.isSuccess) {
+          print("Email verified successfully");
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Email verified successfully")),
           );
@@ -70,18 +71,14 @@ class _OtpPageBodyState extends State<OtpPageBody> {
                   CodeVerificationField(
                     email: widget.id,
                     message: (message) {
-                      if (message != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              message,
-                              style: TextStyles.regularFont(
-                                color: Colors.white,
-                              ),
-                            ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            message,
+                            style: TextStyles.regularFont(color: Colors.white),
                           ),
-                        );
-                      }
+                        ),
+                      );
                     },
                   ),
                   Text(

@@ -34,7 +34,12 @@ class ProductCubit extends Cubit<ProductState> {
     final result = await _productDetailsUseCase.execute(id);
     result.fold(
       (l) => emit(state.reduce(productDetails: Async.failure(l.message ?? ""))),
-      (r) => emit(state.reduce(productDetails: Async.success(r))),
+      (r) {
+        print('SuccessfetchProductDetails $r');
+
+      
+        emit(state.reduce(productDetails: Async.success(r)));
+      },
     );
   }
 }

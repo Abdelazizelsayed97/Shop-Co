@@ -30,7 +30,7 @@ class HomeCubit extends Cubit<HomeState> {
         emit(state.reduce(dummyProducts: Async.failure(l.message ?? "")));
       },
       (r) {
-        print('SuccessfetchDummyProducts ${r}');
+        print('SuccessfetchDummyProducts $r');
         emit(state.reduce(dummyProducts: Async.success(r)));
       },
     );

@@ -184,7 +184,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
           ),
         ] else ...[
           IconButton(
-            icon: Icon(Iconsax.profile_circle, size: 28.r),
+            icon: Icon(Iconsax.profile_circle, size: 28.r, color: Colors.black),
             onPressed: () {
               if (ModalRoute.of(context)?.settings.name != "/profile") {
                 context.goNamed(
@@ -202,7 +202,7 @@ class _AppBarWidgetState extends State<AppBarWidget> {
         Icon(Icons.search),
         24.responsiveWidth(),
         IconButton(
-          icon: Icon(Icons.shopping_cart),
+          icon: Icon(Icons.shopping_cart, color: Colors.black),
           onPressed: () {
             if (ModalRoute.of(context)?.settings.name != "/cart") {
               context.go("/cart");

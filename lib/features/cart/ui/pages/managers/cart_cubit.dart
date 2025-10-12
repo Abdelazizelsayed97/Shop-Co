@@ -36,7 +36,7 @@ class CartCubit extends Cubit<CartState> {
     final result = await _addToCartUseCase.execute(productId);
     result.fold(
       (l) => emit(state.reduce(addToCart: Async.failure(l.message ?? ""))),
-      (r) => emit(state.reduce(addToCart: Async.success(r))),
+      (r) => emit(state.reduce(addToCart: Async.successWithoutData())),
     );
   }
 }
